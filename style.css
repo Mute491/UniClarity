@@ -1,0 +1,9 @@
+#draw-canvas{
+
+    cursor: crosshair;
+
+    background-color: transparent;
+    position:absolute;
+    left: 2px;
+
+}
