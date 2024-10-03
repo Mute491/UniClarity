@@ -21,16 +21,6 @@
         var pageNum = 1;
         var scalePage = 1;
 
-        function generateCanvas(num) {
-
-            for (let i = 0; i < num; i++) {
-
-                $("#draw-canvas-div").append($("<canvas class='draw-canvas'></canvas>"));
-
-            }
-
-        }
-
         function renderPage(num, pdfCanvas) {
 
             var ctx = pdfCanvas.getContext('2d');
@@ -40,9 +30,9 @@
                 let drawCanvas = $("#draw-canvas-div").children();
 
                 viewport = page.getViewport({ scale: scalePage });
+
                 pdfCanvas.height = viewport.height;
                 pdfCanvas.width = viewport.width;
-
 
                 let renderContext = {
                     canvasContext: ctx,
@@ -51,6 +41,11 @@
 
                 page.render(renderContext);
                 $('#page-num').text(num);
+                
+                $("#draw-canvas-div").append($("<canvas class='draw-canvas'></canvas>"));
+
+                drawCanvas[num-1].height = viewport.height;
+                drawCanvas[num-1].width = viewport.width;
 
                 drawCanvas[num-1].style.display = "block";
 
