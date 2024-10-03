@@ -1,10 +1,36 @@
 .draw-canvas{
 
     cursor: crosshair;
-
     background-color: transparent;
-    position:absolute;
-    color:white;
+    /* display: none; */
+    width: 100%;
+    height: 100%;
+}
+
+#draw-canvas-div{
+
+    position: relative;
     z-index: 100;
-    display: none;
+    width: 100%;
+    height: 100%;
+
+}
+
+#pdf-canvas-div{
+
+    position: absolute;
+    z-index: 50;
+
+}
+
+#canvas-div{
+
+    width:80vw;
+    border: 1px solid black;
+    justify-content: center;
+
+}
+
+#body-div{
+
 }

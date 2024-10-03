@@ -14,6 +14,7 @@
     <script>
 
         //aggiungere grandezza canvas
+        //problema con l'offset durante il disegno
 
         var url = 'https://proton-uploads-production.s3.amazonaws.com/56a8acb445e721195ba43fc9351f678be514e1fdda497333057a7dc755e07404.pdf'; // Sostituisci con il percorso del PDF
 
@@ -21,91 +22,24 @@
         var pageNum = 1;
         var scalePage = 1;
 
-        function renderPage(num, pdfCanvas) {
+        var drawing = false;
+        var lastX = 0, lastY = 0;
 
-            var ctx = pdfCanvas.getContext('2d');
+        function caricaEventi(){
 
-            pdfDoc.getPage(num).then(function (page) {
-
-                let drawCanvas = $("#draw-canvas-div").children();
-
-                viewport = page.getViewport({ scale: scalePage });
-
-                pdfCanvas.height = viewport.height;
-                pdfCanvas.width = viewport.width;
-
-                let renderContext = {
-                    canvasContext: ctx,
-                    viewport: viewport
-                };
-
-                page.render(renderContext);
-                $('#page-num').text(num);
-                
-                $("#draw-canvas-div").append($("<canvas class='draw-canvas'></canvas>"));
-
-                drawCanvas[num-1].height = viewport.height;
-                drawCanvas[num-1].width = viewport.width;
-
-                drawCanvas[num-1].style.display = "block";
-
-            });
-
-        }
-
-        $(document).ready(function () {
-
-            //canvas per gestire pdf
-            var canvas = document.getElementById("pdf-canvas");
-
-            var drawing = false;
-
-            var lastX = 0, lastY = 0;
-
-
-            // Carica il PDF
-            pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
-
-                pdfDoc = pdfDoc_;
-                renderPage(pageNum, canvas); // Renderizza la prima pagina
-                generateCanvas(pdfDoc.numPages);
-
-            });
-
-            // Pulsante pagina precedente
-
-            $("#prev-page").click(function () {
-
-                if (pageNum > 1) {
-                    pageNum--;
-                    renderPage(pageNum);
-
-                    
-
-                }
-
-            });
-
-            $("#next-page").click(function () {
-
-                if (pageNum < pdfDoc.numPages) {
-                    pageNum++;
-                    renderPage(pageNum);
-                }
-
-            });
-
+            console.log($("#draw-canvas-div").children());
             //Canvas per disegnare
-
-            $("#draw-canvas-div").children().mousedown(function (e) {
-
+            $("#draw-canvas-div").children().on("mousedown", function (e) {
                 drawing = true;
                 lastx = e.offsetX;
                 lastY = e.offsetY;
 
             });
 
-            $("#draw-canvas-div").children().mousemove(function (e) {
+            $("#draw-canvas-div").children().on("mousemove", function (e) {
+
+                let currentChild = $(this);
+                let ctx = currentChild.get(0).getContext("2d");
 
                 if (!drawing) {
 
@@ -128,20 +62,93 @@
 
             });
 
-            $("#draw-canvas-div").children().mouseup(function (e) {
+            $("#draw-canvas-div").children().on("mouseup", function (e) {
 
                 drawing = false;
 
             });
 
 
-            $("#draw-canvas-div").children().mouseleave(function () {
+            $("#draw-canvas-div").children().on("mouseleave", function () {
 
                 drawing = false;
 
             });
 
+        }
 
+        function generateCanvas(num){
+
+            for(let i=0; i<num; i++){
+
+                $("#draw-canvas-div").append($("<canvas class='draw-canvas'></canvas>"));
+
+            }
+
+        }
+
+        function renderPage(num, pdfCanvas) {
+
+            var ctx = pdfCanvas.getContext('2d');
+
+            pdfDoc.getPage(num).then(function (page) {
+
+                let drawCanvas = $("#draw-canvas-div").children();
+
+                viewport = page.getViewport({ scale: scalePage });
+
+                pdfCanvas.height = viewport.height;
+                pdfCanvas.width = viewport.width;
+
+                $("#canvas-div").css("height", viewport.height);
+
+                let renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+
+                page.render(renderContext);
+                $('#page-num').text(num);
+
+                drawCanvas[num - 1].style.display = "block";
+
+            });
+
+        }
+
+        $(document).ready(function () {
+
+            //canvas per gestire pdf
+            var canvas = document.getElementById("pdf-canvas");
+
+            // Carica il PDF
+            pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
+
+                pdfDoc = pdfDoc_;
+                renderPage(pageNum, canvas); // Renderizza la prima pagina
+                generateCanvas(pdfDoc.numPages);
+                caricaEventi();
+            });
+
+            // Pulsante pagina precedente
+
+            $("#prev-page").click(function () {
+
+                if (pageNum > 1) {
+                    pageNum--;
+                    renderPage(pageNum);
+                }
+
+            });
+
+            $("#next-page").click(function () {
+
+                if (pageNum < pdfDoc.numPages) {
+                    pageNum++;
+                    renderPage(pageNum);
+                }
+
+            });
 
         });
 
@@ -151,27 +158,33 @@
 
 <body>
 
-    <button id="prev-page">Precedente</button>
-    <button id="next-page">Successiva</button>
-    <p>Pagina: <span id="page-num"></span></p>
+    <div id="body-div">
+        <div>
 
-    <input type="color" id="segment-color">
-    <input type="range" id="segment-width">
+            <button id="prev-page">Precedente</button>
+            <button id="next-page">Successiva</button>
+            <p>Pagina: <span id="page-num"></span></p>
 
-    <div id="canvas-div">
-
-        <div id="pdf-canvas-div">
-
-            <canvas id="pdf-canvas"></canvas>
-
-        </div>
-        <div id="draw-canvas-div">
+            <input type="color" id="segment-color">
+            <input type="range" id="segment-width">
 
         </div>
 
 
+        <div id="canvas-div">
+
+            <div id="pdf-canvas-div">
+
+                <canvas id="pdf-canvas"></canvas>
+
+            </div>
+            <div id="draw-canvas-div">
+
+            </div>
+
+
+        </div>
     </div>
-
 
 
 </body>
