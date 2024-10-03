@@ -1,9 +1,10 @@
-#draw-canvas{
+.draw-canvas{
 
     cursor: crosshair;
 
     background-color: transparent;
     position:absolute;
-    left: 2px;
-
+    color:white;
+    z-index: 100;
+    display: none;
 }

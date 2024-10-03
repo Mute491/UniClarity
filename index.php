@@ -13,20 +13,55 @@
 
     <script>
 
+        //aggiungere grandezza canvas
+
+        var url = 'https://proton-uploads-production.s3.amazonaws.com/56a8acb445e721195ba43fc9351f678be514e1fdda497333057a7dc755e07404.pdf'; // Sostituisci con il percorso del PDF
+
+        var pdfDoc = null;
+        var pageNum = 1;
+        var scalePage = 1;
+
+        function generateCanvas(num) {
+
+            for (let i = 0; i < num; i++) {
+
+                $("#draw-canvas-div").append($("<canvas class='draw-canvas'></canvas>"));
+
+            }
+
+        }
+
+        function renderPage(num, pdfCanvas) {
+
+            var ctx = pdfCanvas.getContext('2d');
+
+            pdfDoc.getPage(num).then(function (page) {
+
+                let drawCanvas = $("#draw-canvas-div").children();
+
+                viewport = page.getViewport({ scale: scalePage });
+                pdfCanvas.height = viewport.height;
+                pdfCanvas.width = viewport.width;
+
+
+                let renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+
+                page.render(renderContext);
+                $('#page-num').text(num);
+
+                drawCanvas[num-1].style.display = "block";
+
+            });
+
+        }
+
         $(document).ready(function () {
 
             //canvas per gestire pdf
-
-            var url = 'https://proton-uploads-production.s3.amazonaws.com/56a8acb445e721195ba43fc9351f678be514e1fdda497333057a7dc755e07404.pdf'; // Sostituisci con il percorso del PDF
-
-            var pdfDoc = null,
-                pageNum = 1,
-                canvas = document.getElementById("pdf-canvas"),
-                ctx = canvas.getContext('2d');
-                scalePage = 1;
-
-            var drawCanvas = document.getElementById("draw-canvas");
-            var ctx = canvas.getContext("2d");
+            var canvas = document.getElementById("pdf-canvas");
 
             var drawing = false;
 
@@ -37,33 +72,10 @@
             pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
 
                 pdfDoc = pdfDoc_;
-                renderPage(pageNum); // Renderizza la prima pagina
+                renderPage(pageNum, canvas); // Renderizza la prima pagina
+                generateCanvas(pdfDoc.numPages);
 
             });
-
-            // Funzione per renderizzare una pagina
-            function renderPage(num) {
-
-                pdfDoc.getPage(num).then(function (page) {
-
-                    viewport = page.getViewport({ scale: scalePage });
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-
-                    drawCanvas.height = viewport.height;
-                    drawCanvas.width = viewport.width;
-
-                    let renderContext = {
-                        canvasContext: ctx,
-                        viewport: viewport
-                    };
-
-                    page.render(renderContext);
-                    $('#page-num').text(num);
-
-                });
-
-            }
 
             // Pulsante pagina precedente
 
@@ -72,6 +84,9 @@
                 if (pageNum > 1) {
                     pageNum--;
                     renderPage(pageNum);
+
+                    
+
                 }
 
             });
@@ -87,7 +102,7 @@
 
             //Canvas per disegnare
 
-            $("#draw-canvas").mousedown(function (e) {
+            $("#draw-canvas-div").children().mousedown(function (e) {
 
                 drawing = true;
                 lastx = e.offsetX;
@@ -95,18 +110,18 @@
 
             });
 
-            $("#draw-canvas").mousemove(function (e) {
+            $("#draw-canvas-div").children().mousemove(function (e) {
 
-                if (!drawing){
-                    
+                if (!drawing) {
+
                     lastX = e.offsetX;  // Aggiorna la posizione del mouse
                     lastY = e.offsetY;
-                    
+
                     return;
                 }
 
                 ctx.strokeStyle = $("#segment-color").val();
-                ctx.lineWidth = $("#segment-width").val()/50;
+                ctx.lineWidth = $("#segment-width").val() / 50;
 
                 ctx.beginPath();
                 ctx.moveTo(lastX, lastY);  // Inizia da dove il mouse si trovava l'ultima volta
@@ -118,14 +133,14 @@
 
             });
 
-            $("#draw-canvas").mouseup(function (e) {
+            $("#draw-canvas-div").children().mouseup(function (e) {
 
                 drawing = false;
 
             });
 
 
-            $("#draw-canvas").mouseleave(function () {
+            $("#draw-canvas-div").children().mouseleave(function () {
 
                 drawing = false;
 
@@ -144,14 +159,21 @@
     <button id="prev-page">Precedente</button>
     <button id="next-page">Successiva</button>
     <p>Pagina: <span id="page-num"></span></p>
-    
+
     <input type="color" id="segment-color">
     <input type="range" id="segment-width">
 
-    <div>
+    <div id="canvas-div">
 
-        <canvas id="pdf-canvas"></canvas>
-        <canvas id="draw-canvas"></canvas>
+        <div id="pdf-canvas-div">
+
+            <canvas id="pdf-canvas"></canvas>
+
+        </div>
+        <div id="draw-canvas-div">
+
+        </div>
+
 
     </div>
 
