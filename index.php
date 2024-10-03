@@ -20,14 +20,13 @@
 
         var pdfDoc = null;
         var pageNum = 1;
-        var scalePage = 1;
+        var scalePage = 0.7;
 
         var drawing = false;
         var lastX = 0, lastY = 0;
 
-        function caricaEventi(){
+        function caricaEventi() {
 
-            console.log($("#draw-canvas-div").children());
             //Canvas per disegnare
             $("#draw-canvas-div").children().on("mousedown", function (e) {
                 drawing = true;
@@ -48,9 +47,12 @@
 
                     return;
                 }
-
-                ctx.strokeStyle = $("#segment-color").val();
-                ctx.lineWidth = $("#segment-width").val() / 50;
+                
+                ctx.fillStyle = $("#segment-color").val();  // Colore della penna
+                ctx.beginPath();
+                let radius = $("#segment-width").val() / 200;  // Controlla la dimensione del cerchio
+                ctx.arc(e.offsetX, e.offsetY, radius, 0, Math.PI * 2, true);  // Disegna il cerchio
+                ctx.fill();
 
                 ctx.beginPath();
                 ctx.moveTo(lastX, lastY);  // Inizia da dove il mouse si trovava l'ultima volta
@@ -77,13 +79,20 @@
 
         }
 
-        function generateCanvas(num){
+        function generateCanvas(num) {
 
-            for(let i=0; i<num; i++){
+            for (let i = 0; i < num; i++) {
 
                 $("#draw-canvas-div").append($("<canvas class='draw-canvas'></canvas>"));
 
             }
+
+            let drawCanvas = $("#draw-canvas-div").children();
+
+            drawCanvas.each(function () {
+                this.width = $("#canvas-div").width();  // Occupa tutto canvas-div
+                this.height = $("#canvas-div").height();  // Occupa tutto canvas-div
+            });
 
         }
 
@@ -100,7 +109,12 @@
                 pdfCanvas.height = viewport.height;
                 pdfCanvas.width = viewport.width;
 
-                $("#canvas-div").css("height", viewport.height);
+                // Centra il pdf-canvas nel canvas-div
+                $("#pdf-canvas-div").css({
+                    "height": viewport.height + "px",
+                    "width": viewport.width + "px"
+                });
+
 
                 let renderContext = {
                     canvasContext: ctx,
@@ -110,6 +124,16 @@
                 page.render(renderContext);
                 $('#page-num').text(num);
 
+                if (num > 1) {
+
+                    drawCanvas[num - 2].style.display = "none";
+
+                }
+                else if (num < pdfDoc.numPages) {
+
+                    drawCanvas[num].style.display = "none";
+
+                }
                 drawCanvas[num - 1].style.display = "block";
 
             });
@@ -136,7 +160,7 @@
 
                 if (pageNum > 1) {
                     pageNum--;
-                    renderPage(pageNum);
+                    renderPage(pageNum, canvas);
                 }
 
             });
@@ -145,7 +169,7 @@
 
                 if (pageNum < pdfDoc.numPages) {
                     pageNum++;
-                    renderPage(pageNum);
+                    renderPage(pageNum, canvas);
                 }
 
             });
@@ -166,7 +190,11 @@
             <p>Pagina: <span id="page-num"></span></p>
 
             <input type="color" id="segment-color">
-            <input type="range" id="segment-width">
+            <input type="range" min="1" max="100" id="segment-width">
+            <select id="tool-selector">
+                <option value="1">Penna</option>
+                <option value="2">Evidenziatore</option>
+            </select>
 
         </div>
 
