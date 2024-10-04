@@ -21,6 +21,7 @@
         var pdfDoc = null;
         var pageNum = 1;
         var scalePage = 0.7;
+        var canvasScale = 1;
 
         var drawing = false;
         var lastX = 0, lastY = 0;
@@ -28,50 +29,46 @@
         function caricaEventi() {
 
             //Canvas per disegnare
-            $("#draw-canvas-div").children().on("mousedown", function (e) {
+            $("#draw-svg-div").children().on("mousedown", function (e) {
                 drawing = true;
                 lastx = e.offsetX;
                 lastY = e.offsetY;
 
             });
 
-            $("#draw-canvas-div").children().on("mousemove", function (e) {
+            $("#draw-svg-div").children().on("mousemove", function (e) {
 
-                let currentChild = $(this);
-                let ctx = currentChild.get(0).getContext("2d");
-
-                if (!drawing) {
-
-                    lastX = e.offsetX;  // Aggiorna la posizione del mouse
-                    lastY = e.offsetY;
-
+                if (!drawing){
+                    
+                    lastX = e.offsetX;
+                    lastY = e.offsetY;    
+                    
                     return;
                 }
-                
-                ctx.fillStyle = $("#segment-color").val();  // Colore della penna
-                ctx.beginPath();
-                let radius = $("#segment-width").val() / 200;  // Controlla la dimensione del cerchio
-                ctx.arc(e.offsetX, e.offsetY, radius, 0, Math.PI * 2, true);  // Disegna il cerchio
-                ctx.fill();
 
-                ctx.beginPath();
-                ctx.moveTo(lastX, lastY);  // Inizia da dove il mouse si trovava l'ultima volta
-                ctx.lineTo(e.offsetX, e.offsetY);  // Traccia una linea fino alla nuova posizione del mouse
-                ctx.stroke();
+                let line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', lastX);
+                line.setAttribute('y1', lastY);
+                line.setAttribute('x2', e.offsetX);
+                line.setAttribute('y2', e.offsetY);
+                line.setAttribute('stroke', $("#segment-color").val());
+                line.setAttribute('stroke-width', $("#segment-width").val() / 10);
+                line.setAttribute('stroke-linecap', 'round'); // Imposta il cappello della linea a tondo
 
-                lastX = e.offsetX;  // Aggiorna la posizione del mouse
+                this.appendChild(line);
+
+                lastX = e.offsetX;
                 lastY = e.offsetY;
-
             });
 
-            $("#draw-canvas-div").children().on("mouseup", function (e) {
+            $("#draw-svg-div").children().on("mouseup", function (e) {
 
                 drawing = false;
 
             });
 
 
-            $("#draw-canvas-div").children().on("mouseleave", function () {
+            $("#draw-svg-div").children().on("mouseleave", function () {
 
                 drawing = false;
 
@@ -83,15 +80,17 @@
 
             for (let i = 0; i < num; i++) {
 
-                $("#draw-canvas-div").append($("<canvas class='draw-canvas'></canvas>"));
+                $("#draw-svg-div").append($("<svg class='draw-svg'></svg>"));
 
             }
 
-            let drawCanvas = $("#draw-canvas-div").children();
+            let drawCanvas = $("#draw-svg-div").children();
 
             drawCanvas.each(function () {
+
                 this.width = $("#canvas-div").width();  // Occupa tutto canvas-div
                 this.height = $("#canvas-div").height();  // Occupa tutto canvas-div
+
             });
 
         }
@@ -102,7 +101,7 @@
 
             pdfDoc.getPage(num).then(function (page) {
 
-                let drawCanvas = $("#draw-canvas-div").children();
+                let drawCanvas = $("#draw-svg-div").children();
 
                 viewport = page.getViewport({ scale: scalePage });
 
@@ -174,6 +173,23 @@
 
             });
 
+            $("#zoomin").click(function () {
+
+                scalePage += 0.2;
+                canvasScale += 0.2;
+                renderPage(pageNum, canvas);
+
+            });
+
+            $("#zoomout").click(function () {
+
+                scalePage -= 0.2;
+                canvasScale -= 0.2;
+                console.log(canvasScale);
+                renderPage(pageNum, canvas);
+
+            });
+
         });
 
     </script>
@@ -196,6 +212,9 @@
                 <option value="2">Evidenziatore</option>
             </select>
 
+            <input type="button" id="zoomin" value="Zoom in">
+            <input type="button" id="zoomout" value="Zoom out">
+
         </div>
 
 
@@ -206,7 +225,7 @@
                 <canvas id="pdf-canvas"></canvas>
 
             </div>
-            <div id="draw-canvas-div">
+            <div id="draw-svg-div">
 
             </div>
 

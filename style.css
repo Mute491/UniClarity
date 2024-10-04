@@ -18,10 +18,9 @@ html, body {
 
 #pdf-canvas-div {
     position: absolute; /* Sovrapposto a draw-canvas-div */
-    z-index: 50;
 }
 
-#draw-canvas-div {
+#draw-svg-div {
     position: absolute;
     top: 0;
     left: 0;
@@ -30,12 +29,10 @@ html, body {
     z-index: 1000;
 }
 
-.draw-canvas {
+.draw-svg {
     cursor: crosshair;
     background-color: transparent;
-    position: absolute;
-    top: 0;
-    left: 0;
+
     width: 100%;
     height: 100%;
     display: none;
