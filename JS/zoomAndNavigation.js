@@ -1,15 +1,23 @@
 function zoom(scaleChange, isZoomIn) {
-    scalePage += (isZoomIn ? scaleChange : -scaleChange);
+
+    let drawSvg = $("#draw-svg-div").children();
+
+    if (isZoomIn) {
+        scalePage += scaleChange;
+    } else {
+        scalePage -= scaleChange;
+    }
+
     renderPage(pageNum, document.getElementById("pdf-canvas"));
 
-    $(".draw-svg").css("transform", "scale(" + scalePage + ")");
-
-    let drawCanvas = $("#draw-svg-div").children();
-    drawCanvas.each(function () {
+    // Scala anche il livello SVG per mantenerlo sincronizzato con il PDF
+    
+    drawSvg.each(function () {
         this.width = $("#canvas-div").width();
         this.height = $("#canvas-div").height();
     });
 }
+
 
 
 $(document).ready(function () {
@@ -31,11 +39,20 @@ $(document).ready(function () {
 
     // Zoom In/Out
     $("#zoomin").click(function () {
-        zoom(0.1, true);
+
+        if(scalePage < 3){
+            zoom(0.1, true);
+        }
+        console.log("zoom in: "+scalePage);
+        
     });
 
     $("#zoomout").click(function () {
-        zoom(0.1, false);
+        if(scalePage > 0.7){
+            zoom(0.1, false);
+        }
+        console.log("zoom out: "+scalePage);
+
     });
 
 });

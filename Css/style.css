@@ -1,39 +1,178 @@
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
 }
 
+.canvas-and-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Allinea al centro */
+    width: 100%; /* Assicura che occupi tutta la larghezza disponibile */
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between; /* Spazia gli elementi agli estremi */
+    width: 100%; /* Occupare l'intera larghezza */
+    max-width: 80vw; /* Limita la larghezza per adattarsi a canvas-div */
+    padding: 0 20px; /* Padding laterale per distanziare dai bordi */
+    margin-bottom: 10px; /* Margine inferiore per distanziare dalla canvas */
+}
+
+.change-page-buttons {
+    display: flex; /* Assicura che i bottoni siano affiancati */
+    align-items: center; /* Allinea verticalmente al centro */
+}
+
+.change-page-buttons button {
+    margin-right: 10px; /* Spazio tra i bottoni */
+}
+
+.page-label {
+    display: flex; /* Mantiene il layout flessibile */
+    align-items: center; /* Allinea verticalmente al centro */
+}
+
 #canvas-div {
     position: relative; /* Per sovrapporre elementi */
-    width: 80vw; /* Occupa l'80% della larghezza dello schermo */
-    height: 90vh; /* Occupa il 90% dell'altezza dello schermo */
     margin: 0 auto; /* Centra orizzontalmente */
-    border: 1px solid black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: auto;
+    border: 1px solid black; /* Bordo per evidenziare il canvas */
+    height: auto; /* Imposta l'altezza automatica */
 }
 
 #pdf-canvas-div {
-    position: absolute; /* Sovrapposto a draw-canvas-div */
+    position: absolute; /* Sovrapposto a draw-svg-div */
+    top: 0; /* Assicura che sia in alto */
+    left: 0; /* Assicura che sia a sinistra */
+    z-index: 1; /* Sotto il disegno */
 }
 
 #draw-svg-div {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: absolute; /* Sovrapposto al canvas PDF */
     width: 100%; /* Si estende su tutto canvas-div */
     height: 100%; /* Si estende su tutto canvas-div */
-    z-index: 1000;
+    z-index: 1000; /* Sopra il canvas PDF */
 }
 
 .draw-svg {
-    cursor: crosshair;
-    background-color: transparent;
+    cursor: crosshair; /* Cursor a croce per disegnare */
+    background-color: transparent; /* Trasparente per non coprire il PDF */
+    width: 100%; /* Occupa tutto il div */
+    height: 100%; /* Occupa tutto il div */
+    display: none; /* Nasconde inizialmente gli SVG */
+}
 
-    width: 100%;
-    height: 100%;
-    display: none;
+
+button{
+
+    border: 0 solid black;
+    background-color: transparent;
+    color:cornflowerblue;
+}
+
+button:hover{
+
+    color:blue;
+
+}
+
+
+/* Stile per il color picker */
+input[type="color"] {
+    -webkit-appearance: none; /* Rimuovi lo stile predefinito del browser */
+    width: 40px; /* Larghezza del color picker */
+    height: 40px; /* Altezza del color picker */
+    border: none; /* Rimuovi il bordo */
+    border-radius: 5px; /* Angoli arrotondati */
+    cursor: pointer; /* Mostra il cursore come puntatore */
+    outline: none; /* Rimuovi il bordo di messa a fuoco */
+}
+
+/* Stile per il range */
+input[type="range"] {
+    -webkit-appearance: none; /* Rimuovi lo stile predefinito del browser */
+    width: 15%; /* Larghezza al 100% */
+    height: 8px; /* Altezza della barra */
+    background: #ddd; /* Colore di sfondo della barra */
+    border-radius: 5px; /* Angoli arrotondati */
+    outline: none; /* Rimuovi il bordo di messa a fuoco */
+    margin: 10px 0; /* Margine sopra e sotto */
+}
+
+/* Stile per il pollice (thumb) */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Rimuovi lo stile predefinito del browser */
+    appearance: none; /* Rimuovi lo stile predefinito del browser */
+    width: 10px; /* Larghezza del pollice */
+    height: 10px; /* Altezza del pollice */
+    border-radius: 50%; /* Pollice arrotondato */
+    background: #007BFF; /* Colore del pollice */
+    cursor: pointer; /* Mostra il cursore come puntatore */
+}
+
+/* Stile per il pollice (thumb) su Firefox */
+input[type="range"]::-moz-range-thumb {
+    width: 10px; /* Larghezza del pollice */
+    height: 10px; /* Altezza del pollice */
+    border-radius: 50%; /* Pollice arrotondato */
+    background: #007BFF; /* Colore del pollice */
+    cursor: pointer; /* Mostra il cursore come puntatore */
+}
+
+/* Stile per il pollice (thumb) su Internet Explorer */
+input[type="range"]::-ms-thumb {
+    width: 10px; /* Larghezza del pollice */
+    height: 10px; /* Altezza del pollice */
+    border-radius: 50%; /* Pollice arrotondato */
+    background: #007BFF; /* Colore del pollice */
+    cursor: pointer; /* Mostra il cursore come puntatore */
+}
+
+/* Stile per il track su Firefox */
+input[type="range"]::-moz-range-track {
+    background: #ddd; /* Colore di sfondo della barra */
+    border-radius: 5px; /* Angoli arrotondati */
+}
+
+/* Stile per il track su Internet Explorer */
+input[type="range"]::-ms-track {
+    background: #ddd; /* Colore di sfondo della barra */
+    border-radius: 5px; /* Angoli arrotondati */
+    height: 8px; /* Altezza della barra */
+    border: none; /* Rimuovi il bordo */
+}
+
+/* Rimuovi il segno di selezione sul color picker */
+input[type="color"]::-webkit-color-swatch {
+    border: none; /* Rimuovi il bordo */
+    border-radius: 5px; /* Angoli arrotondati */
+}
+
+
+/* Stile per il select */
+select {
+    width: 100px; /* Larghezza del select */
+    padding: 10px; /* Padding interno */
+    border: 1px solid #ccc; /* Bordo chiaro */
+    border-radius: 5px; /* Angoli arrotondati */
+    background-color: #fff; /* Colore di sfondo */
+    color: #333; /* Colore del testo */
+    font-size: 16px; /* Dimensione del font */
+    appearance: none; /* Rimuovi lo stile predefinito */
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABgElEQVR42mJkYGBgYfB+AEqD/9cH4ASRGLgFgaSBiYGDBkP8/7P5C8eBMA2LBoAABgYoBGJgYAAAAAElFTkSuQmCC'); /* Freccia personalizzata */
+    background-repeat: no-repeat; /* Non ripetere l'immagine */
+    background-position: right 10px center; /* Posiziona l'immagine a destra */
+}
+
+/* Stile per il select al passaggio del mouse */
+select:hover {
+    border-color: #007BFF; /* Colore del bordo al passaggio del mouse */
+}
+
+/* Stile per il select quando è in focus */
+select:focus {
+    outline: none; /* Rimuovi il bordo di messa a fuoco predefinito */
+    border-color: #007BFF; /* Colore del bordo in focus */
 }
