@@ -4,34 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Visualizza PDF</title>
-    <!-- Includi PDF.js da un CDN -->
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="Css/style.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <link rel="stylesheet" href="Css/style.css">
     <script type="module" src="JS/PdfRender.js"></script>
     <!-- <script src="JS/drawing.js"></script>
     <script src="JS/zoomAndNavigation.js"></script> -->
 
     <script type="module">
 
+        import { PdfRender } from './JS/PdfRender.js';
+
         $(document).ready(function () {
             let url = 'https://proton-uploads-production.s3.amazonaws.com/56a8acb445e721195ba43fc9351f678be514e1fdda497333057a7dc755e07404.pdf';
             let vp = null;
             let pageNumber = 1;
 
-            const pdfRender = new PdfRender(url, 0.7, "pdf-canvas");
+            let canvas = document.getElementById("pdf-canvas");
+
+            const pdfRender = new PdfRender(url, 0.7, canvas);
 
             pdfRender.renderPage(pageNumber);
 
-            vp = pdfRender.getViewport();
+            // vp = pdfRender.getViewport();
             
             // let drawCanvas = $("#draw-svg-div").children();
 
-            console.log("ciao");
+            console.log("prova");
             
 
             // $("#canvas-div").css({
