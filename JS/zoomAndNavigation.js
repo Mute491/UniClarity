@@ -1,3 +1,4 @@
+
 function zoom(scaleChange, isZoomIn) {
 
     let drawSvg = $("#draw-svg-div").children();
@@ -8,7 +9,7 @@ function zoom(scaleChange, isZoomIn) {
         scalePage -= scaleChange;
     }
 
-    renderPage(pageNum, document.getElementById("pdf-canvas"));
+    pdfRender.renderPage(pageNumber);
 
     // Scala anche il livello SVG per mantenerlo sincronizzato con il PDF
     
@@ -18,22 +19,30 @@ function zoom(scaleChange, isZoomIn) {
     });
 }
 
+function updateSize(div, vp){
+
+    $(div).css({
+        "height": vp.height + "px",
+        "width": vp.width + "px"
+    });
+
+}
 
 
 $(document).ready(function () {
 
     // Navigazione pagine
     $("#prev-page").click(function () {
-        if (pageNum > 1) {
-            pageNum--;
-            renderPage(pageNum, document.getElementById("pdf-canvas"));
+        if (pageNumber > 1) {
+            pageNumber--;
+            pdfRender.renderPage(pageNumber);
         }
     });
 
     $("#next-page").click(function () {
-        if (pageNum < pdfDoc.numPages) {
-            pageNum++;
-            renderPage(pageNum, document.getElementById("pdf-canvas"));
+        if (pageNumber < pdfDoc.numPages) {
+            pageNumber++;
+            pdfRender.renderPage(pageNumber);
         }
     });
 

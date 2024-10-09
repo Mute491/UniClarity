@@ -6,15 +6,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizza PDF</title>
     <!-- Includi PDF.js da un CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="Css/style.css">
-    <script src="JS/pdfRendering.js"></script>
-    <script src="JS/drawing.js"></script>
-    <script src="JS/zoomAndNavigation.js"></script>
+    <script type="module" src="JS/PdfRender.js"></script>
+    <!-- <script src="JS/drawing.js"></script>
+    <script src="JS/zoomAndNavigation.js"></script> -->
+
+    <script type="module">
+
+        $(document).ready(function () {
+            let url = 'https://proton-uploads-production.s3.amazonaws.com/56a8acb445e721195ba43fc9351f678be514e1fdda497333057a7dc755e07404.pdf';
+            let vp = null;
+            let pageNumber = 1;
+
+            const pdfRender = new PdfRender(url, 0.7, "pdf-canvas");
+
+            pdfRender.renderPage(pageNumber);
+
+            vp = pdfRender.getViewport();
+            
+            // let drawCanvas = $("#draw-svg-div").children();
+
+            console.log("ciao");
+            
+
+            // $("#canvas-div").css({
+            //     "height": vp.height + "px",
+            //     "width": vp.width + "px"
+            // });
+    
+            // $("#pdf-canvas-div").css({
+            //     "height": vp.height + "px",
+            //     "width": vp.width + "px"
+            // });
+
+            
+            // $('#page-num').text(pageNumber);
+    
+            // // Aggiorna la visibilità del layer SVG
+            // if (num > 1) {
+            //     drawCanvas[num - 2].style.display = "none";
+            // }
+            // if (num < pdfDoc.numPages) {
+            //     drawCanvas[num].style.display = "none";
+            // }
+            // drawCanvas[num - 1].style.display = "block";
+    
+            // // Aggiorna la dimensione dell'SVG per corrispondere alla pagina PDF
+            // drawCanvas.each(function () {
+            //     this.setAttribute('width', vp.width);
+            //     this.setAttribute('height', vp.height);
+            // });
+
+        });
+
+    </script>
+
 
 </head>
 
