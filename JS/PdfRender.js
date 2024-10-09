@@ -4,6 +4,12 @@ export class PdfRender {
 
     constructor(pdfUrl, scale, pdfCanvas) {
         
+        this.initialize(pdfUrl, scale, pdfCanvas);
+
+    }
+
+    async initialize(pdfUrl, scale, pdfCanvas){
+
         this.pdfjsLib = window['pdfjs-dist/build/pdf'];
 
         this.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
@@ -18,8 +24,7 @@ export class PdfRender {
         this.viewport = null;
         this.pageMaxNumber = 0;
 
-        this.pdfjsLib.getDocument(this.url).promise.then(pdfDoc => {
-
+        await this.pdfjsLib.getDocument(this.url).promise.then(pdfDoc => {
 
             //capire come mettere in attributo pdfDoc
             this.pdf = pdfDoc;
@@ -27,12 +32,9 @@ export class PdfRender {
 
         });
 
-        console.log(this.pdf);
-
     }
 
-
-    getViewport(page) {
+    getPageViewport(page) {
         return page.getViewport({ scale: this.scale });
     }
 
@@ -40,13 +42,19 @@ export class PdfRender {
         this.scale = newScale;
     }
 
-    renderPage(num) {
+    async renderPage(num) {
 
-        this.pdf.getPage(1).then((page) => { // Usa la funzione freccia per mantenere il contesto di `this`
+        //se pdf non è stato ancora caricato allora aspetta
+        while(this.pdf === null){
+            console.log("aspetto...");
+            await new Promise(resolve => setTimeout(resolve, 500)); // Aspetta mezzo secondo
+        }
+
+        await this.pdf.getPage(num).then((page) => { // Usa la funzione freccia per mantenere il contesto di `this`
             this.viewport = page.getViewport(this.scale); // Ottieni il viewport
 
-            this.canvas.height = this.viewport.height;
-            this.canvas.width = this.viewport.width;
+            this.canvas.style.height = this.viewport.height;
+            this.canvas.style.width = this.viewport.width;
 
             // Rendering della pagina del PDF
             const renderContext = {

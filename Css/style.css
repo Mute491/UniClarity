@@ -1,5 +1,4 @@
-html,
-body {
+html, body {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -161,9 +160,6 @@ select {
     color: #333; /* Colore del testo */
     font-size: 16px; /* Dimensione del font */
     appearance: none; /* Rimuovi lo stile predefinito */
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABgElEQVR42mJkYGBgYfB+AEqD/9cH4ASRGLgFgaSBiYGDBkP8/7P5C8eBMA2LBoAABgYoBGJgYAAAAAElFTkSuQmCC'); /* Freccia personalizzata */
-    background-repeat: no-repeat; /* Non ripetere l'immagine */
-    background-position: right 10px center; /* Posiziona l'immagine a destra */
 }
 
 /* Stile per il select al passaggio del mouse */
