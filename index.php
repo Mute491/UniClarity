@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Visualizza PDF</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="Css/style.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -19,8 +20,9 @@
     <script type="module">
 
         import { PdfRender } from './JS/PdfRender.js';
-
+        
         $(document).ready(async function () {
+
             let url = 'https://proton-uploads-production.s3.amazonaws.com/56a8acb445e721195ba43fc9351f678be514e1fdda497333057a7dc755e07404.pdf';
             let vp = null;
             let pageNumber = 1;
@@ -32,9 +34,9 @@
             const pdfRender = new PdfRender(url, 0.7, canvas);
 
             await pdfRender.renderPage(pageNumber);
-            
+
             vp = pdfRender.getPageViewport();
-            
+
             generateCanvas(pdfRender.pageMaxNumber);
 
             drawSvg = $("#draw-svg-div").children();
@@ -43,21 +45,64 @@
                 "height": vp.height + "px",
                 "width": vp.width + "px"
             });
-    
+
             $("#pdf-canvas-div").css({
                 "height": vp.height + "px",
                 "width": vp.width + "px"
             });
 
-            
+
             $('#page-num').text(pageNumber);
-            
+
             drawSvg[pageNumber - 1].style.display = "block";
-    
+
             // Aggiorna la dimensione dell'SVG per corrispondere alla pagina PDF
             drawSvg.each(function () {
                 this.setAttribute('width', vp.width);
                 this.setAttribute('height', vp.height);
+            });
+
+
+
+            $("#prev-page").click(function () {
+                if (pageNumber > 1) {
+                    pageNumber--;
+
+                    $(".draw-svg").eq(pageNumber - 1).css("display", "block");
+                    $(".draw-svg").eq(pageNumber).css("display", "none");
+
+                    pdfRender.renderPage(pageNumber);
+                }
+            });
+
+            $("#next-page").click(function () {
+                if (pageNumber < pdfRender.pageMaxNumber) {
+                    pageNumber++;
+
+                    $(".draw-svg").eq(pageNumber - 1).css("display", "block");
+                    $(".draw-svg").eq(pageNumber - 2).css("display", "none");
+
+                    pdfRender.renderPage(pageNumber);
+
+                }
+            });
+
+            // Zoom In/Out
+            $("#zoomin").click(function () {
+
+                if (pdRender.scale < 3) {
+                    zoom(0.1, true);
+                }
+                console.log("zoom in: " + scalePage);
+
+            });
+
+            $("#zoomout").click(function () {
+                if (pdRender.scale > 0.7) {
+                    zoom(0.1, false);
+                }
+                console.log("zoom out: " + scalePage);
+
             });
 
         });

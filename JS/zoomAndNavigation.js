@@ -4,9 +4,9 @@ function zoom(scaleChange, isZoomIn) {
     let drawSvg = $("#draw-svg-div").children();
 
     if (isZoomIn) {
-        scalePage += scaleChange;
+        pdfRender.scale += scaleChange;
     } else {
-        scalePage -= scaleChange;
+        scalePage.scale -= scaleChange;
     }
 
     pdfRender.renderPage(pageNumber);
@@ -27,52 +27,3 @@ function updateSize(div, vp){
     });
 
 }
-
-
-$(document).ready(function () {
-
-    // Navigazione pagine
-    $("#prev-page").click(function () {
-        if (pageNumber > 1) {
-            pageNumber--;
-
-            let svg = $(".draw-svg")
-            svg[pageNumber-1].css("display", "block");
-            svg[pageNumber].css("display", "none");
-
-            pdfRender.renderPage(pageNumber);
-        }
-    });
-
-    $("#next-page").click(function () {
-        if (pageNumber < pdfDoc.numPages) {
-            pageNumber++;
-
-            let svg = $(".draw-svg")
-            svg[pageNumber-1].css("display", "block");
-            svg[pageNumber-2].css("display", "none");
-
-            pdfRender.renderPage(pageNumber);
-            
-        }
-    });
-
-    // Zoom In/Out
-    $("#zoomin").click(function () {
-
-        if(scalePage < 3){
-            zoom(0.1, true);
-        }
-        console.log("zoom in: "+scalePage);
-        
-    });
-
-    $("#zoomout").click(function () {
-        if(scalePage > 0.7){
-            zoom(0.1, false);
-        }
-        console.log("zoom out: "+scalePage);
-
-    });
-
-});

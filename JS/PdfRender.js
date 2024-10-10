@@ -40,6 +40,7 @@ export class PdfRender {
     }
 
     setScale(newScale) {
+
         this.scale = newScale;
     }
 
