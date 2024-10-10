@@ -30,23 +30,21 @@
             const pdfRender = new PdfRender(url, 0.7, canvas);
 
             pdfRender.renderPage(pageNumber);
-
-            // vp = pdfRender.getViewport();
             
-            // let drawCanvas = $("#draw-svg-div").children();
-
-            console.log("prova");
+            // let drawCanvas = $("#draw-svg-div").children()
             
+            generateCanvas(pdfReader.pageMaxNumber);
 
-            // $("#canvas-div").css({
-            //     "height": vp.height + "px",
-            //     "width": vp.width + "px"
-            // });
+
+            $("#canvas-div").css({
+                "height": vp.height + "px",
+                "width": vp.width + "px"
+            });
     
-            // $("#pdf-canvas-div").css({
-            //     "height": vp.height + "px",
-            //     "width": vp.width + "px"
-            // });
+            $("#pdf-canvas-div").css({
+                "height": vp.height + "px",
+                "width": vp.width + "px"
+            });
 
             
             // $('#page-num').text(pageNumber);

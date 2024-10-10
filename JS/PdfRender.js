@@ -34,8 +34,16 @@ export class PdfRender {
 
     }
 
-    getPageViewport(page) {
-        return page.getViewport({ scale: this.scale });
+    async getPageViewport(page) {
+
+        if(this.viewport === null){
+
+            console.log("aspetto viewport...");
+            await new Promise(resolve => setTimeout(resolve, 500)); // Aspetta mezzo secondo
+
+        }
+
+        return this.viewport;
     }
 
     setScale(newScale) {
@@ -51,10 +59,10 @@ export class PdfRender {
         }
 
         await this.pdf.getPage(num).then((page) => { // Usa la funzione freccia per mantenere il contesto di `this`
-            this.viewport = page.getViewport(this.scale); // Ottieni il viewport
+            this.viewport = page.getViewport({scale: this.scale}); // Ottieni il viewport
 
-            this.canvas.style.height = this.viewport.height;
-            this.canvas.style.width = this.viewport.width;
+            this.canvas.height = this.viewport.height;
+            this.canvas.width = this.viewport.width;
 
             // Rendering della pagina del PDF
             const renderContext = {
