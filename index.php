@@ -27,15 +27,16 @@
             let vp = null;
             let pageNumber = 1;
 
-            let drawSvg;
-
             let canvas = document.getElementById("pdf-canvas");
 
-            const pdfRender = new PdfRender(url, 0.7, canvas);
+            var pdfRender = new PdfRender(url, 0.7, canvas);
+
+            let drawSvg;
+
 
             await pdfRender.renderPage(pageNumber);
 
-            vp = pdfRender.getPageViewport();
+            vp = pdfRender.viewport;
 
             generateCanvas(pdfRender.pageMaxNumber);
 
@@ -51,6 +52,7 @@
                 "width": vp.width + "px"
             });
 
+            //------------ EVENTI -------------
 
             $('#page-num').text(pageNumber);
 
@@ -72,6 +74,11 @@
                     $(".draw-svg").eq(pageNumber).css("display", "none");
 
                     pdfRender.renderPage(pageNumber);
+
+                    updateSize("#canvas-div", pdfRender.viewport);
+                    updateSize("#draw-svg-div", pdfRender.viewport);
+
+                    $('#page-num').text(pageNumber);
                 }
             });
 
@@ -84,24 +91,31 @@
 
                     pdfRender.renderPage(pageNumber);
 
+                    updateSize("#canvas-div", pdfRender.viewport);
+                    updateSize("#draw-svg-div", pdfRender.viewport);
+
+                    $('#page-num').text(pageNumber);
+
                 }
             });
 
             // Zoom In/Out
             $("#zoomin").click(function () {
 
-                if (pdRender.scale < 3) {
-                    zoom(0.1, true);
+                if (pdfRender.scale < 3) {
+                    zoom(pdfRender, pageNumber, 0.1, true);
+
                 }
-                console.log("zoom in: " + scalePage);
+
+                console.log("zoom in: " + pdfRender.scale);
 
             });
 
             $("#zoomout").click(function () {
-                if (pdRender.scale > 0.7) {
-                    zoom(0.1, false);
+                if (pdfRender.scale > 0.7) {
+                    zoom(pdfRender, pageNumber, 0.1, false);
                 }
-                console.log("zoom out: " + scalePage);
+                console.log("zoom out: " + pdfRender.scale);
 
             });
 

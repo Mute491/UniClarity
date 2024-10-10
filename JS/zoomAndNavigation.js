@@ -1,29 +1,35 @@
 
-function zoom(scaleChange, isZoomIn) {
+async function zoom(pdfObject, pageNo, scaleChange, isZoomIn) {
 
     let drawSvg = $("#draw-svg-div").children();
 
+    let vp;
+
     if (isZoomIn) {
-        pdfRender.scale += scaleChange;
+        pdfObject.scale += scaleChange;
     } else {
-        scalePage.scale -= scaleChange;
+        pdfObject.scale -= scaleChange;
     }
 
-    pdfRender.renderPage(pageNumber);
-
+    await pdfObject.renderPage(pageNo); 
     // Scala anche il livello SVG per mantenerlo sincronizzato con il PDF
+
+    vp = pdfObject.viewport;
     
-    drawSvg.each(function () {
-        this.width = $("#canvas-div").width();
-        this.height = $("#canvas-div").height();
-    });
-}
-
-function updateSize(div, vp){
-
-    $(div).css({
+    $("#canvas-div").css({
         "height": vp.height + "px",
         "width": vp.width + "px"
     });
 
+    $("#draw-svg-div").css({
+        "height": vp.height + "px",
+        "width": vp.width + "px"
+    });
+
+    drawSvg.each(function () {
+        this.width = $("#canvas-div").width();
+        this.height = $("#canvas-div").height();
+    });
+
+    
 }
