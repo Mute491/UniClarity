@@ -35,6 +35,11 @@ $(document).ready(function () {
     $("#prev-page").click(function () {
         if (pageNumber > 1) {
             pageNumber--;
+
+            let svg = $(".draw-svg")
+            svg[pageNumber-1].css("display", "block");
+            svg[pageNumber].css("display", "none");
+
             pdfRender.renderPage(pageNumber);
         }
     });
@@ -42,7 +47,13 @@ $(document).ready(function () {
     $("#next-page").click(function () {
         if (pageNumber < pdfDoc.numPages) {
             pageNumber++;
+
+            let svg = $(".draw-svg")
+            svg[pageNumber-1].css("display", "block");
+            svg[pageNumber-2].css("display", "none");
+
             pdfRender.renderPage(pageNumber);
+            
         }
     });
 

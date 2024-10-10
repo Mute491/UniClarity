@@ -13,28 +13,31 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script type="module" src="JS/PdfRender.js"></script>
-    <!-- <script src="JS/drawing.js"></script>
-    <script src="JS/zoomAndNavigation.js"></script> -->
+    <script src="JS/drawing.js"></script>
+    <script src="JS/zoomAndNavigation.js"></script>
 
     <script type="module">
 
         import { PdfRender } from './JS/PdfRender.js';
 
-        $(document).ready(function () {
+        $(document).ready(async function () {
             let url = 'https://proton-uploads-production.s3.amazonaws.com/56a8acb445e721195ba43fc9351f678be514e1fdda497333057a7dc755e07404.pdf';
             let vp = null;
             let pageNumber = 1;
+
+            let drawSvg;
 
             let canvas = document.getElementById("pdf-canvas");
 
             const pdfRender = new PdfRender(url, 0.7, canvas);
 
-            pdfRender.renderPage(pageNumber);
+            await pdfRender.renderPage(pageNumber);
             
-            // let drawCanvas = $("#draw-svg-div").children()
+            vp = pdfRender.getPageViewport();
             
-            generateCanvas(pdfReader.pageMaxNumber);
+            generateCanvas(pdfRender.pageMaxNumber);
 
+            drawSvg = $("#draw-svg-div").children();
 
             $("#canvas-div").css({
                 "height": vp.height + "px",
@@ -47,22 +50,15 @@
             });
 
             
-            // $('#page-num').text(pageNumber);
+            $('#page-num').text(pageNumber);
+            
+            drawSvg[pageNumber - 1].style.display = "block";
     
-            // // Aggiorna la visibilità del layer SVG
-            // if (num > 1) {
-            //     drawCanvas[num - 2].style.display = "none";
-            // }
-            // if (num < pdfDoc.numPages) {
-            //     drawCanvas[num].style.display = "none";
-            // }
-            // drawCanvas[num - 1].style.display = "block";
-    
-            // // Aggiorna la dimensione dell'SVG per corrispondere alla pagina PDF
-            // drawCanvas.each(function () {
-            //     this.setAttribute('width', vp.width);
-            //     this.setAttribute('height', vp.height);
-            // });
+            // Aggiorna la dimensione dell'SVG per corrispondere alla pagina PDF
+            drawSvg.each(function () {
+                this.setAttribute('width', vp.width);
+                this.setAttribute('height', vp.height);
+            });
 
         });
 

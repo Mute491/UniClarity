@@ -34,14 +34,7 @@ export class PdfRender {
 
     }
 
-    async getPageViewport(page) {
-
-        if(this.viewport === null){
-
-            console.log("aspetto viewport...");
-            await new Promise(resolve => setTimeout(resolve, 500)); // Aspetta mezzo secondo
-
-        }
+    getPageViewport(page) {
 
         return this.viewport;
     }
@@ -72,6 +65,6 @@ export class PdfRender {
 
             page.render(renderContext); // Renderizza la pagina
         });
- 
+        console.log("render concluso");
     }
 }
