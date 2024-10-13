@@ -1,5 +1,4 @@
 html, body {
-    height: 100%;
     margin: 0;
     padding: 0;
 }
@@ -9,15 +8,6 @@ html, body {
     flex-direction: column;
     align-items: center; /* Allinea al centro */
     width: 100%; /* Assicura che occupi tutta la larghezza disponibile */
-}
-
-.navigation {
-    display: flex;
-    justify-content: space-between; /* Spazia gli elementi agli estremi */
-    width: 100%; /* Occupare l'intera larghezza */
-    max-width: 80vw; /* Limita la larghezza per adattarsi a canvas-div */
-    padding: 0 20px; /* Padding laterale per distanziare dai bordi */
-    margin-bottom: 10px; /* Margine inferiore per distanziare dalla canvas */
 }
 
 .change-page-buttons {
@@ -30,8 +20,7 @@ html, body {
 }
 
 .page-label {
-    display: flex; /* Mantiene il layout flessibile */
-    align-items: center; /* Allinea verticalmente al centro */
+
 }
 
 #canvas-div {
@@ -171,4 +160,29 @@ select:hover {
 select:focus {
     outline: none; /* Rimuovi il bordo di messa a fuoco predefinito */
     border-color: #007BFF; /* Colore del bordo in focus */
+}
+
+#body-div {
+    display: flex;
+    flex-direction: row; /* Disposizione orizzontale */
+    align-items: stretch; /* I container si allineano lungo l'asse verticale */
+    height: 95vh; /* Se vuoi che l'altezza occupi l'intera pagina */
+    margin-top:2px;
+}
+
+.ai-chatbox {
+    flex: 0 0 100px; /* Mantiene una larghezza fissa di 100px per questi container */
+    background-color: black;
+}
+
+.tools-and-buttons {
+    flex: 0 0 100px; /* Mantiene una larghezza fissa di 100px per questi container */
+}
+
+
+
+.pdf-draw-section {
+    flex: 1; /* Questo container occupa tutto lo spazio disponibile al centro */
+    overflow: auto; /* Abilita lo scroll se il contenuto supera la dimensione disponibile */
+    height: 100%; /* Assicura che il container occupi tutta l'altezza */
 }

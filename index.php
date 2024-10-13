@@ -20,7 +20,7 @@
     <script type="module">
 
         import { PdfRender } from './JS/PdfRender.js';
-        
+
         $(document).ready(async function () {
 
             let url = 'https://proton-uploads-production.s3.amazonaws.com/56a8acb445e721195ba43fc9351f678be514e1fdda497333057a7dc755e07404.pdf';
@@ -66,33 +66,31 @@
 
 
 
-            $("#prev-page").click(function () {
+            $("#prev-page").click(async function () {
                 if (pageNumber > 1) {
                     pageNumber--;
 
                     $(".draw-svg").eq(pageNumber - 1).css("display", "block");
                     $(".draw-svg").eq(pageNumber).css("display", "none");
 
-                    pdfRender.renderPage(pageNumber);
+                    await pdfRender.renderPage(pageNumber);
 
-                    updateSize("#canvas-div", pdfRender.viewport);
-                    updateSize("#draw-svg-div", pdfRender.viewport);
+                    updateSizes(pdfRender);
 
                     $('#page-num').text(pageNumber);
                 }
             });
 
-            $("#next-page").click(function () {
+            $("#next-page").click( async function () {
                 if (pageNumber < pdfRender.pageMaxNumber) {
                     pageNumber++;
 
                     $(".draw-svg").eq(pageNumber - 1).css("display", "block");
                     $(".draw-svg").eq(pageNumber - 2).css("display", "none");
 
-                    pdfRender.renderPage(pageNumber);
+                    await pdfRender.renderPage(pageNumber);
 
-                    updateSize("#canvas-div", pdfRender.viewport);
-                    updateSize("#draw-svg-div", pdfRender.viewport);
+                    updateSizes(pdfRender);
 
                     $('#page-num').text(pageNumber);
 
@@ -114,6 +112,7 @@
             $("#zoomout").click(function () {
                 if (pdfRender.scale > 0.7) {
                     zoom(pdfRender, pageNumber, 0.1, false);
+
                 }
                 console.log("zoom out: " + pdfRender.scale);
 
@@ -129,33 +128,15 @@
 <body>
 
     <div id="body-div">
-        <div>
-            <input type="color" id="segment-color">
-            <input type="range" min="1" max="100" id="segment-width">
-            <select id="tool-selector">
-                <option value="1">Penna</option>
-                <option value="2">Evidenziatore</option>
-            </select>
 
-            <button id="zoomin"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
-            <button id="zoomout"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+        <section class="ai-chatbox">
 
-        </div>
 
-        <div class="canvas-and-buttons">
 
-            <div class="navigation">
+        </section>
 
-                <div class="change-page-buttons">
-                    <button id="prev-page"><i class="fa-solid fa-arrow-left"></i></button>
-                    <button id="next-page"><i class="fa-solid fa-arrow-right"></i></button>
-                </div>
 
-                <div class="page-label">
-                    <p>Pagina: <span id="page-num"></span></p>
-                </div>
-
-            </div>
+        <section class="pdf-draw-section">
 
             <div id="canvas-div">
 
@@ -169,8 +150,44 @@
                 </div>
 
             </div>
-        </div>
-    </div>
+
+        </section>
+
+        <section class="tools-and-buttons">
+            <div class="drawing-tools">
+
+                <input type="color" id="segment-color">
+                <input type="range" min="1" max="100" id="segment-width">
+
+                <select id="tool-selector">
+
+                    <option value="1">Penna</option>
+                    <option value="2">Evidenziatore</option>
+
+                </select>
+
+                <div class="zoom-in-out">
+
+                    <button id="zoomin"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+                    <button id="zoomout"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+
+                </div>
+                <div class="navgation-buttons">
+
+                    <button id="prev-page"><i class="fa-solid fa-arrow-left"></i></button>
+                    <button id="next-page"><i class="fa-solid fa-arrow-right"></i></button>
+
+                </div>
+
+                <div class="page-label">
+
+                    <p>Pagina: <span id="page-num"></span></p>
+
+                </div>
+
+            </div>
+
+        </section>
 </body>
 
 </html>
