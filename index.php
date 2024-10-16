@@ -1,3 +1,32 @@
+<?php
+
+    if( 
+        isset($_POST["fileUrl"])&& 
+        isset($_POST["fileName"])&&
+        isset($_POST["fileId"])
+    ){
+
+        $fileUrl = $_POST["fileUrl"];
+        $fileId = $_POST["fileId"];
+        $fileName = $_POST["fileName"];
+
+    }
+    else{
+
+        //fai il redirect indietro per non far accedere
+
+    }
+
+    if(isset($_POST["svgData"])){
+
+        $svgData = $_POST["svgData"];
+        //in base a questo stampi già gli svg disegnati
+
+    }
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="it">
 
@@ -23,7 +52,9 @@
 
         $(document).ready(async function () {
 
-            let url = 'https://proton-uploads-production.s3.amazonaws.com/56a8acb445e721195ba43fc9351f678be514e1fdda497333057a7dc755e07404.pdf';
+            <?php echo('let url = "'.$fileUrl.'";'); ?>
+
+            //let url = 'https://proton-uploads-production.s3.amazonaws.com/56a8acb445e721195ba43fc9351f678be514e1fdda497333057a7dc755e07404.pdf';
             let vp = null;
             let pageNumber = 1;
 
@@ -38,7 +69,16 @@
 
             vp = pdfRender.viewport;
 
-            generateCanvas(pdfRender.pageMaxNumber);
+            <?php
+                    
+                if(!isset($_POST["svgData"])){
+
+                    //se non è settato genera le canvas nuove
+                    echo("generateCanvas(pdfRender.pageMaxNumber);");
+
+                }
+                    
+            ?>
 
             drawSvg = $("#draw-svg-div").children();
 
@@ -129,13 +169,6 @@
 
     <div id="body-div">
 
-        <section class="ai-chatbox">
-
-
-
-        </section>
-
-
         <section class="pdf-draw-section">
 
             <div id="canvas-div">
@@ -146,6 +179,16 @@
 
                 </div>
                 <div id="draw-svg-div">
+
+                    <?php
+                    
+                        if(isset($_POST["svgData"])){
+
+                            //stampa le canvas disegnate
+
+                        }
+                    
+                    ?>
 
                 </div>
 
