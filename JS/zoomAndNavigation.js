@@ -38,3 +38,34 @@ function updateSizes(pdfObject){
     console.log("fatto!");
 
 }
+
+function saveSvg(fileID){
+
+    let drawSvg = $("#draw-svg-div").children();
+    let svgStringList;
+
+    drawSvg.each(function () {
+
+        svgStringList.append(new XMLSerializer().serializeToString(svgElement));
+
+    });
+
+    //aggiungere l'url del webhook
+    $.ajax({
+        url: '/your-server-endpoint',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+                fileId: fileID,
+                content: svgStringList,
+                type: "image/svg+xml"
+            }),
+        success: function(response) {
+            console.log('SVGList salvata con successo!');
+        },
+        error: function(error) {
+            console.error('Errore nell\'invio dell\'SVGList:', error);
+        }
+    });
+
+}

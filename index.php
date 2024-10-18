@@ -19,7 +19,7 @@
 
     if(isset($_POST["svgData"])){
 
-        $svgData = $_POST["svgData"];
+        $svgData = json_decode($_POST['svgData'], true);
         //in base a questo stampi già gli svg disegnati
 
     }
@@ -74,7 +74,31 @@
                 if(!isset($_POST["svgData"])){
 
                     //se non è settato genera le canvas nuove
-                    echo("generateCanvas(pdfRender.pageMaxNumber);");
+                    echo("generateSvg(pdfRender.pageMaxNumber);");
+
+                }
+                else{
+
+                    $inputParameter = "";
+                    if (is_array($svgData)) {
+
+                        $len = count($svgData)-1;
+
+                        foreach ($svgData as $index => $svgValue) {
+
+                            $inputParameter .= "'".$svgValue."'";
+
+                            if($index < $len){
+
+                                $inputParameter .= ", ";
+
+                            }
+                            
+                        }
+
+                    }
+
+                    echo("printSvg(".$inputParameter.")");
 
                 }
                     
@@ -158,6 +182,12 @@
 
             });
 
+            $("#saveButton").click(function () {
+
+                <?php echo("saveSvg(".$fileId.");"); ?>
+
+            });
+
         });
 
     </script>
@@ -179,16 +209,6 @@
 
                 </div>
                 <div id="draw-svg-div">
-
-                    <?php
-                    
-                        if(isset($_POST["svgData"])){
-
-                            //stampa le canvas disegnate
-
-                        }
-                    
-                    ?>
 
                 </div>
 
@@ -225,6 +245,12 @@
                 <div class="page-label">
 
                     <p>Pagina: <span id="page-num"></span></p>
+
+                </div>
+
+                <div>
+
+                    <button id="saveButton"><i class="fa-solid fa-floppy-disk"></i></button>
 
                 </div>
 

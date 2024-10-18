@@ -70,7 +70,7 @@ function caricaEventi() {
     });
 }
 
-function generateCanvas(num) {
+function generateSvg(num) {
     for (let i = 0; i < num; i++) {
         $("#draw-svg-div").append($("<svg viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet' class='draw-svg'></svg>"));
     }
@@ -83,4 +83,28 @@ function generateCanvas(num) {
 
 
     caricaEventi();
+}
+
+function printSvg(svgStringArray){
+
+    let drawSvg;
+    let parser = new DOMParser();
+    svgStringArray.forEach(element => {
+        
+        let svgDocument = parser.parseFromString(element, "image/svg+xml");
+
+        var svgElement = svgDocument.documentElement;
+
+        // Ora puoi inserire l'elemento SVG nel DOM, ad esempio in un div
+        document.getElementById("draw-svg-div").appendChild(svgElement);
+
+    });
+
+    drawSvg = $("#draw-svg-div").children();
+    
+    drawSvg.each(function () {
+        this.width = $("#canvas-div").width();
+        this.height = $("#canvas-div").height();
+    });
+    
 }
