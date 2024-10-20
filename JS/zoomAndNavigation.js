@@ -42,30 +42,34 @@ function updateSizes(pdfObject){
 function saveSvg(fileID){
 
     let drawSvg = $("#draw-svg-div").children();
-    let svgStringList;
+    let svgStringList = [];
 
     drawSvg.each(function () {
 
-        svgStringList.append(new XMLSerializer().serializeToString(svgElement));
+        svgStringList.push(new XMLSerializer().serializeToString(this));
 
     });
 
-    //aggiungere l'url del webhook
-    $.ajax({
-        url: '/your-server-endpoint',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-                fileId: fileID,
-                content: svgStringList,
-                type: "image/svg+xml"
-            }),
-        success: function(response) {
-            console.log('SVGList salvata con successo!');
-        },
-        error: function(error) {
-            console.error('Errore nell\'invio dell\'SVGList:', error);
-        }
-    });
+    console.log(JSON.stringify({
+        content: svgStringList,
+    }));
+
+    // aggiungere l'url del webhook
+    // $.ajax({
+    //     url: '/your-server-endpoint',
+    //     method: 'POST',
+    //     contentType: 'application/json',
+    //     data: JSON.stringify({
+    //             fileId: fileID,
+    //             content: svgStringList,
+    //             type: "image/svg+xml"
+    //         }),
+    //     success: function(response) {
+    //         console.log('SVGList salvata con successo!');
+    //     },
+    //     error: function(error) {
+    //         console.error('Errore nell\'invio dell\'SVGList:', error);
+    //     }
+    // });
 
 }

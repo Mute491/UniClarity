@@ -1,4 +1,7 @@
 <?php
+    $_POST["fileUrl"] = 'https://proton-uploads-production.s3.amazonaws.com/56a8acb445e721195ba43fc9351f678be514e1fdda497333057a7dc755e07404.pdf';
+    $_POST["fileName"] = 'file1';
+    $_POST["fileId"] = 1;
 
     if( 
         isset($_POST["fileUrl"])&& 
@@ -19,8 +22,9 @@
 
     if(isset($_POST["svgData"])){
 
-        $svgData = json_decode($_POST['svgData'], true);
+        $svgData = json_decode($_POST["svgData"], true);
         //in base a questo stampi già gli svg disegnati
+        $svgData = $svgData["content"];
 
     }
 
@@ -83,10 +87,10 @@
                     if (is_array($svgData)) {
 
                         $len = count($svgData)-1;
-
+                        
                         foreach ($svgData as $index => $svgValue) {
 
-                            $inputParameter .= "'".$svgValue."'";
+                            $inputParameter .= "\"$svgValue\"";
 
                             if($index < $len){
 
@@ -98,7 +102,7 @@
 
                     }
 
-                    echo("printSvg(".$inputParameter.")");
+                    echo("printSvg([".$inputParameter."]);");
 
                 }
                     

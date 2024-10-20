@@ -107,4 +107,6 @@ function printSvg(svgStringArray){
         this.height = $("#canvas-div").height();
     });
     
+    caricaEventi();
+
 }
