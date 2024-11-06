@@ -1,17 +1,31 @@
 <?php
-    $_POST["fileUrl"] = 'https://proton-uploads-production.s3.amazonaws.com/56a8acb445e721195ba43fc9351f678be514e1fdda497333057a7dc755e07404.pdf';
-    $_POST["fileName"] = 'file1';
-    $_POST["fileId"] = 1;
+
+    /*
+        "fileUrl": "https://prova...",
+        "fileId": number 
+        "svgData":{
+
+            "content":["svg1...", ...]
+
+        }
+
+        nella tabella acquisti viene gestita la tabella con la relazione catalogo utente
+        nell'attributo Json appunti devi mettere 
+        ATTENTO AD AGGIUNGERE LA VIRGOLA ALL'INIZIO
+        , "svgData":{
+
+            "content":["svg1...", ...]
+
+        }
+    */
 
     if( 
         isset($_POST["fileUrl"])&& 
-        isset($_POST["fileName"])&&
         isset($_POST["fileId"])
     ){
 
         $fileUrl = $_POST["fileUrl"];
         $fileId = $_POST["fileId"];
-        $fileName = $_POST["fileName"];
 
     }
     else{
@@ -19,6 +33,15 @@
         //fai il redirect indietro per non far accedere
 
     }
+
+    /*  
+        tutto questo viene salvato nel record su adalo
+        , "svgData":{
+
+            "content":["svg1...", ...]
+
+        }
+    */
 
     if(isset($_POST["svgData"])){
 
