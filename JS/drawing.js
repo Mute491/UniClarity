@@ -94,6 +94,7 @@ function printSvg(svgStringArray){
         let svgDocument = parser.parseFromString(element, "image/svg+xml");
 
         var svgElement = svgDocument.documentElement;
+        console.log("svg element: "+svgElement);
 
         // Ora puoi inserire l'elemento SVG nel DOM, ad esempio in un div
         document.getElementById("draw-svg-div").appendChild(svgElement);

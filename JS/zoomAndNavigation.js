@@ -39,7 +39,7 @@ function updateSizes(pdfObject){
 
 }
 
-function saveSvg(fileID){
+function saveSvg(acquistiId){
 
     let drawSvg = $("#draw-svg-div").children();
     let svgStringList = [];
@@ -54,13 +54,13 @@ function saveSvg(fileID){
         content: svgStringList,
     }));
 
-    // aggiungere l'url del webhook
+    
     // $.ajax({
     //     url: '/your-server-endpoint',
     //     method: 'POST',
     //     contentType: 'application/json',
     //     data: JSON.stringify({
-    //             fileId: fileID,
+    //             acquistiId: acquistiId,
     //             content: svgStringList,
     //             type: "image/svg+xml"
     //         }),

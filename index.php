@@ -1,8 +1,7 @@
 <?php
-
     /*
         "fileUrl": "https://prova...",
-        "fileId": number 
+        "acquistiId": number ,
         "svgData":{
 
             "content":["svg1...", ...]
@@ -21,11 +20,11 @@
 
     if( 
         isset($_POST["fileUrl"])&& 
-        isset($_POST["fileId"])
+        isset($_POST["acquistiId"])
     ){
 
         $fileUrl = $_POST["fileUrl"];
-        $fileId = $_POST["fileId"];
+        $acquistiId = $_POST["acquistiId"];
 
     }
     else{
@@ -43,11 +42,16 @@
         }
     */
 
+
     if(isset($_POST["svgData"])){
+        echo(htmlspecialchars($_POST["svgData"]));
 
         $svgData = json_decode($_POST["svgData"], true);
-        //in base a questo stampi già gli svg disegnati
-        $svgData = $svgData["content"];
+        foreach($svgData as $data){
+
+            echo(htmlspecialchars($data));
+
+        }
 
     }
 
@@ -81,7 +85,7 @@
 
             <?php echo('let url = "'.$fileUrl.'";'); ?>
 
-            //let url = 'https://proton-uploads-production.s3.amazonaws.com/56a8acb445e721195ba43fc9351f678be514e1fdda497333057a7dc755e07404.pdf';
+            url = 'https://proton-uploads-production.s3.amazonaws.com/117f4955096d256b320ef8e93c837ab11bceaf8d677fcb4d5c95fa0b658c94a2.pdf';
             let vp = null;
             let pageNumber = 1;
 
@@ -108,7 +112,6 @@
 
                     $inputParameter = "";
                     if (is_array($svgData)) {
-
                         $len = count($svgData)-1;
                         
                         foreach ($svgData as $index => $svgValue) {
@@ -211,7 +214,7 @@
 
             $("#saveButton").click(function () {
 
-                <?php echo("saveSvg(".$fileId.");"); ?>
+                <?php echo("saveSvg(".$acquistiId.");"); ?>
 
             });
 
