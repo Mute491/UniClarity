@@ -1,59 +1,53 @@
 <?php
-    /*
-        "fileUrl": "https://prova...",
-        "acquistiId": number ,
-        "svgData":{
+/*
+    "fileUrl": "https://prova...",
+    "acquistiId": number ,
+    "svgData":{
 
-            "content":["svg1...", ...]
-
-        }
-
-        nella tabella acquisti viene gestita la tabella con la relazione catalogo utente
-        nell'attributo Json appunti devi mettere 
-        ATTENTO AD AGGIUNGERE LA VIRGOLA ALL'INIZIO
-        , "svgData":{
-
-            "content":["svg1...", ...]
-
-        }
-    */
-
-    if( 
-        isset($_POST["fileUrl"])&& 
-        isset($_POST["acquistiId"])
-    ){
-
-        $fileUrl = $_POST["fileUrl"];
-        $acquistiId = $_POST["acquistiId"];
-
-    }
-    else{
-
-        //fai il redirect indietro per non far accedere
+        "content":["svg1...", ...]
 
     }
 
-    /*  
-        tutto questo viene salvato nel record su adalo
-        , "svgData":{
+    nella tabella acquisti viene gestita la tabella con la relazione catalogo utente
+    nell'attributo Json appunti devi mettere 
+    ATTENTO AD AGGIUNGERE LA VIRGOLA ALL'INIZIO
+    , "svgData":{
 
-            "content":["svg1...", ...]
-
-        }
-    */
-
-
-    if(isset($_POST["svgData"])){
-        echo(htmlspecialchars($_POST["svgData"]));
-
-        $svgData = json_decode($_POST["svgData"], true);
-        foreach($svgData as $data){
-
-            echo(htmlspecialchars($data));
-
-        }
+        "content":["svg1...", ...]
 
     }
+*/
+
+if (
+    isset($_POST["fileUrl"]) &&
+    isset($_POST["acquistiId"])
+) {
+
+    $fileUrl = $_POST["fileUrl"];
+    $acquistiId = $_POST["acquistiId"];
+
+} else {
+
+    //fai il redirect indietro per non far accedere
+
+}
+
+/*  
+    tutto questo viene salvato nel record su adalo
+    , "svgData":{
+
+        "content":["svg1...", ...]
+
+    }
+*/
+
+
+if (isset($_POST["svgData"])) {
+    $svgData = $_POST["svgData"];
+    // Decodifica il JSON in un array associativo
+    $svgArray = json_decode($svgData, true);
+
+}
 
 
 ?>
@@ -83,9 +77,8 @@
 
         $(document).ready(async function () {
 
-            <?php echo('let url = "'.$fileUrl.'";'); ?>
+            <?php echo ('let url = "' . $fileUrl . '";'); ?>
 
-            url = 'https://proton-uploads-production.s3.amazonaws.com/117f4955096d256b320ef8e93c837ab11bceaf8d677fcb4d5c95fa0b658c94a2.pdf';
             let vp = null;
             let pageNumber = 1;
 
@@ -101,37 +94,34 @@
             vp = pdfRender.viewport;
 
             <?php
-                    
-                if(!isset($_POST["svgData"])){
 
-                    //se non è settato genera le canvas nuove
-                    echo("generateSvg(pdfRender.pageMaxNumber);");
+            if (!isset($_POST["svgData"])) {
 
-                }
-                else{
+                //se non è settato genera le canvas nuove
+                echo ("generateSvg(pdfRender.pageMaxNumber);");
 
-                    $inputParameter = "";
-                    if (is_array($svgData)) {
-                        $len = count($svgData)-1;
-                        
-                        foreach ($svgData as $index => $svgValue) {
+            } else {
+                echo("console.log('ciao');");
+                $inputParameter = "[";
+                $len = count($svgArray) - 1;
 
-                            $inputParameter .= "\"$svgValue\"";
+                foreach ($svgArray as $key => $svgValue) {
 
-                            if($index < $len){
+                    $inputParameter .= "'$svgValue'";
 
-                                $inputParameter .= ", ";
+                    if ($key < $len) {
 
-                            }
-                            
-                        }
+                        $inputParameter .= ", ";
 
                     }
 
-                    echo("printSvg([".$inputParameter."]);");
-
                 }
-                    
+                $inputParameter .= "]";
+                echo("console.log(".$inputParameter.");");
+                echo ("printSvg(" . $inputParameter . ");");
+
+            }
+
             ?>
 
             drawSvg = $("#draw-svg-div").children();
@@ -175,7 +165,7 @@
                 }
             });
 
-            $("#next-page").click( async function () {
+            $("#next-page").click(async function () {
                 if (pageNumber < pdfRender.pageMaxNumber) {
                     pageNumber++;
 
@@ -214,7 +204,7 @@
 
             $("#saveButton").click(function () {
 
-                <?php echo("saveSvg(".$acquistiId.");"); ?>
+                <?php echo ("saveSvg(" . $acquistiId . ");"); ?>
 
             });
 

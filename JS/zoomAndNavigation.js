@@ -42,11 +42,13 @@ function updateSizes(pdfObject){
 function saveSvg(acquistiId){
 
     let drawSvg = $("#draw-svg-div").children();
-    let svgStringList = [];
+    let svgStringList = {};
+    let counter = 0;
 
     drawSvg.each(function () {
 
-        svgStringList.push(new XMLSerializer().serializeToString(this));
+        svgStringList[counter.toString()] = new XMLSerializer().serializeToString(this);
+        counter++;
 
     });
 
