@@ -51,27 +51,23 @@ function saveSvg(acquistiId){
         counter++;
 
     });
-
-    console.log(JSON.stringify({
-        content: svgStringList,
-    }));
-
     
-    // $.ajax({
-    //     url: '/your-server-endpoint',
-    //     method: 'POST',
-    //     contentType: 'application/json',
-    //     data: JSON.stringify({
-    //             acquistiId: acquistiId,
-    //             content: svgStringList,
-    //             type: "image/svg+xml"
-    //         }),
-    //     success: function(response) {
-    //         console.log('SVGList salvata con successo!');
-    //     },
-    //     error: function(error) {
-    //         console.error('Errore nell\'invio dell\'SVGList:', error);
-    //     }
-    // });
+    console.log("contatto il webhook");
+    $.ajax({
+        url: 'https://hooks.zapier.com/hooks/catch/20292832/25ez5st/',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+                acquistiId: acquistiId,
+                content: svgStringList,
+                type: "image/svg+xml"
+            }),
+        success: function(response) {
+            console.log('SVGList salvata con successo!');
+        },
+        error: function(error) {
+            console.error('Errore nell\'invio dell\'SVGList:', error);
+        }
+    });
 
 }

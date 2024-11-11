@@ -43,10 +43,16 @@ if (
 
 
 if (isset($_POST["svgData"])) {
-    $svgData = $_POST["svgData"];
-    // Decodifica il JSON in un array associativo
-    $svgArray = json_decode($svgData, true);
 
+    if (!($_POST["svgData"] == "{}")) {
+
+        $svgData = $_POST["svgData"];
+        // Decodifica il JSON in un array associativo
+        $svgArray = json_decode($svgData, true);
+
+    } else {
+        echo ("null");
+    }
 }
 
 
@@ -101,25 +107,26 @@ if (isset($_POST["svgData"])) {
                 echo ("generateSvg(pdfRender.pageMaxNumber);");
 
             } else {
-                echo("console.log('ciao');");
-                $inputParameter = "[";
-                $len = count($svgArray) - 1;
+                if (!($_POST["svgData"] == "{}")) {
 
-                foreach ($svgArray as $key => $svgValue) {
+                    $inputParameter = "[";
+                    $len = count($svgArray) - 1;
 
-                    $inputParameter .= "'$svgValue'";
+                    foreach ($svgArray as $key => $svgValue) {
 
-                    if ($key < $len) {
+                        $inputParameter .= "'$svgValue'";
 
-                        $inputParameter .= ", ";
+                        if ($key < $len) {
+
+                            $inputParameter .= ", ";
+
+                        }
 
                     }
+                    $inputParameter .= "]";
 
+                    echo ("printSvg(" . $inputParameter . ");");
                 }
-                $inputParameter .= "]";
-                echo("console.log(".$inputParameter.");");
-                echo ("printSvg(" . $inputParameter . ");");
-
             }
 
             ?>
