@@ -4,19 +4,20 @@
     "acquistiId": number ,
     "svgData":{
 
-        "content":["svg1...", ...]
+        "0": "svg..",
+        "1": "svg..",
+        ...
 
     }
 
-    nella tabella acquisti viene gestita la tabella con la relazione catalogo utente
-    nell'attributo Json appunti devi mettere 
-    ATTENTO AD AGGIUNGERE LA VIRGOLA ALL'INIZIO
-    , "svgData":{
+    Tutto funzionante
 
-        "content":["svg1...", ...]
-
-    }
+    Ottimizzazione:
+    compressione degli svg
+    salvataggio di quelli sono con dei disegni dentro
+    aggiunta raccolta del webhook come parametro di input (ragioni di sicurezza)
 */
+
 
 if (
     isset($_POST["fileUrl"]) &&
