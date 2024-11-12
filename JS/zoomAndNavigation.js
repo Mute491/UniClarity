@@ -39,7 +39,7 @@ function updateSizes(pdfObject){
 
 }
 
-function saveSvg(acquistiId){
+async function saveSvg(acquistiId){
 
     let drawSvg = $("#draw-svg-div").children();
     let svgStringList = {};
@@ -53,21 +53,15 @@ function saveSvg(acquistiId){
     });
     
     console.log("contatto il webhook");
-    $.ajax({
-        url: 'https://hooks.zapier.com/hooks/catch/20292832/25ez5st/',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-                acquistiId: acquistiId,
-                content: svgStringList,
-                type: "image/svg+xml"
-            }),
-        success: function(response) {
-            console.log('SVGList salvata con successo!');
-        },
-        error: function(error) {
-            console.error('Errore nell\'invio dell\'SVGList:', error);
-        }
-    });
+    const response = await fetch("https://hooks.zapier.com/hooks/catch/20292832/25nr9qc/", {
+        method: "POST",
+        body: JSON.stringify({
+            acquistiId: acquistiId, 
+            content: [JSON.stringify(svgStringList)]
+        }),
+      });
+      
+    console.log(response);
+    alert("Salvataggio effettuato");
 
 }

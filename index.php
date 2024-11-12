@@ -42,17 +42,13 @@ if (
 */
 
 
-if (isset($_POST["svgData"])) {
+if (!($_POST["svgData"] == "{}")) {
 
-    if (!($_POST["svgData"] == "{}")) {
 
-        $svgData = $_POST["svgData"];
-        // Decodifica il JSON in un array associativo
-        $svgArray = json_decode($svgData, true);
+    $svgData = $_POST["svgData"];
+    // Decodifica il JSON in un array associativo
+    $svgArray = json_decode($svgData, true);
 
-    } else {
-        echo ("null");
-    }
 }
 
 
@@ -101,32 +97,30 @@ if (isset($_POST["svgData"])) {
 
             <?php
 
-            if (!isset($_POST["svgData"])) {
+            if (!($_POST["svgData"] == "{}")) {
 
                 //se non è settato genera le canvas nuove
                 echo ("generateSvg(pdfRender.pageMaxNumber);");
 
             } else {
-                if (!($_POST["svgData"] == "{}")) {
 
-                    $inputParameter = "[";
-                    $len = count($svgArray) - 1;
+                $inputParameter = "[";
+                $len = count($svgArray) - 1;
 
-                    foreach ($svgArray as $key => $svgValue) {
+                foreach ($svgArray as $key => $svgValue) {
 
-                        $inputParameter .= "'$svgValue'";
+                    $inputParameter .= "'$svgValue'";
 
-                        if ($key < $len) {
+                    if ($key < $len) {
 
-                            $inputParameter .= ", ";
-
-                        }
+                        $inputParameter .= ", ";
 
                     }
-                    $inputParameter .= "]";
 
-                    echo ("printSvg(" . $inputParameter . ");");
                 }
+                $inputParameter .= "]";
+
+                echo ("printSvg(" . $inputParameter . ");");
             }
 
             ?>
