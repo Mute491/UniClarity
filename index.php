@@ -98,7 +98,7 @@ if (!($_POST["svgData"] == "{}")) {
 
             <?php
 
-            if (!($_POST["svgData"] == "{}")) {
+            if ($_POST["svgData"] == "{}") {
 
                 //se non è settato genera le canvas nuove
                 echo ("generateSvg(pdfRender.pageMaxNumber);");
