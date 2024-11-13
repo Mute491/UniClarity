@@ -1,6 +1,7 @@
 html, body {
     margin: 0;
     padding: 0;
+    font-family: arial;
 }
 
 .canvas-and-buttons {
@@ -17,10 +18,6 @@ html, body {
 
 .change-page-buttons button {
     margin-right: 10px; /* Spazio tra i bottoni */
-}
-
-.page-label {
-
 }
 
 #canvas-div {
@@ -81,7 +78,7 @@ input[type="color"] {
 /* Stile per il range */
 input[type="range"] {
     -webkit-appearance: none; /* Rimuovi lo stile predefinito del browser */
-    width: 15%; /* Larghezza al 100% */
+    width: 30%; /* Larghezza al 100% */
     height: 8px; /* Altezza della barra */
     background: #ddd; /* Colore di sfondo della barra */
     border-radius: 5px; /* Angoli arrotondati */
@@ -170,19 +167,20 @@ select:focus {
     margin-top:2px;
 }
 
-.ai-chatbox {
-    flex: 0 0 100px; /* Mantiene una larghezza fissa di 100px per questi container */
-    background-color: black;
-}
 
 .tools-and-buttons {
-    flex: 0 0 100px; /* Mantiene una larghezza fissa di 100px per questi container */
+    flex: 0 0 30%; /* Mantiene una larghezza fissa di 100px per questi container */
 }
 
+.zoom-in-out, .navigation-buttons{
+
+    padding-bottom: 20px;
+
+}
 
 
 .pdf-draw-section {
     flex: 1; /* Questo container occupa tutto lo spazio disponibile al centro */
-    overflow: auto; /* Abilita lo scroll se il contenuto supera la dimensione disponibile */
+    /*overflow: hidden;*/ /* Abilita lo scroll se il contenuto supera la dimensione disponibile */
     height: 100%; /* Assicura che il container occupi tutta l'altezza */
 }

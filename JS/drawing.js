@@ -54,6 +54,17 @@ function caricaEventi() {
             line.setAttribute('stroke-opacity', 0.02);
 
         }
+        // Verifica se il tool selezionato è "gomma" (assumendo "3" come gomma)
+        if ($("#tool-selector").val() === "3") {
+        // Ottieni l'elemento SVG sotto il cursore
+            const elementUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
+        
+        // Se è una linea, rimuovila
+            if (elementUnderCursor && elementUnderCursor.tagName === 'line') {
+                elementUnderCursor.remove();
+            }
+        return; // Esci dalla funzione per evitare di disegnare una nuova linea
+    }
 
         this.appendChild(line);
 

@@ -248,19 +248,20 @@ if (!($_POST["svgData"] == "{}")) {
 
                     <option value="1">Penna</option>
                     <option value="2">Evidenziatore</option>
+                    <option value="3">Gomma</option>
 
                 </select>
 
                 <div class="zoom-in-out">
 
-                    <button id="zoomin"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
-                    <button id="zoomout"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+                    <button id="zoomin"><i class="fa-solid fa-magnifying-glass-plus fa-xl"></i></button>
+                    <button id="zoomout"><i class="fa-solid fa-magnifying-glass-minus fa-xl"></i></button>
 
                 </div>
                 <div class="navgation-buttons">
 
-                    <button id="prev-page"><i class="fa-solid fa-arrow-left"></i></button>
-                    <button id="next-page"><i class="fa-solid fa-arrow-right"></i></button>
+                    <button id="prev-page"><i class="fa-solid fa-arrow-left fa-xl"></i></button>
+                    <button id="next-page"><i class="fa-solid fa-arrow-right fa-xl"></i></button>
 
                 </div>
 
@@ -272,7 +273,7 @@ if (!($_POST["svgData"] == "{}")) {
 
                 <div>
 
-                    <button id="saveButton"><i class="fa-solid fa-floppy-disk"></i></button>
+                    <button id="saveButton"><i class="fa-solid fa-floppy-disk fa-xl"></i></button>
 
                 </div>
 

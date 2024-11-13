@@ -53,7 +53,7 @@ async function saveSvg(acquistiId){
     });
     
     console.log("contatto il webhook");
-    const response = await fetch("https://hooks.zapier.com/hooks/catch/20292832/25nr9qc/", {
+    const response = await fetch("https://hooks.zapier.com/hooks/catch/20680064/25varql/", {
         method: "POST",
         body: JSON.stringify({
             acquistiId: acquistiId, 
