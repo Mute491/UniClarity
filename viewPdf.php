@@ -1,31 +1,9 @@
 <?php
-/*
-    "fileUrl": "https://prova...",
-    "acquistiId": number ,
-    "svgData":{
-
-        "0": "svg..",
-        "1": "svg..",
-        ...
-
-    }
-
-    Tutto funzionante
-
-    Ottimizzazione:
-    compressione degli svg
-    salvataggio di quelli sono con dei disegni dentro
-    aggiunta raccolta del webhook come parametro di input (ragioni di sicurezza)
-*/
 
 
-if (
-    isset($_POST["fileUrl"]) &&
-    isset($_POST["acquistiId"])
-) {
+if (isset($_POST["fileUrl"])) {
 
     $fileUrl = $_POST["fileUrl"];
-    $acquistiId = $_POST["acquistiId"];
 
 } else {
 
@@ -35,26 +13,6 @@ if (
     exit();
 
 }
-
-/*  
-    tutto questo viene salvato nel record su adalo
-    , "svgData":{
-
-        "content":["svg1...", ...]
-
-    }
-*/
-
-
-if (!($_POST["svgData"] == "{}")) {
-
-
-    $svgData = $_POST["svgData"];
-    // Decodifica il JSON in un array associativo
-    $svgArray = json_decode($svgData, true);
-
-}
-
 
 ?>
 
@@ -74,7 +32,6 @@ if (!($_POST["svgData"] == "{}")) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script type="module" src="JS/PdfRender.js"></script>
-    <script src="JS/drawing.js"></script>
     <script src="JS/zoomAndNavigation.js"></script>
 
     <script type="module">
@@ -92,44 +49,10 @@ if (!($_POST["svgData"] == "{}")) {
 
             var pdfRender = new PdfRender(url, 0.7, canvas);
 
-            let drawSvg;
-
 
             await pdfRender.renderPage(pageNumber);
 
             vp = pdfRender.viewport;
-
-            <?php
-
-            if ($_POST["svgData"] == "{}") {
-
-                //se non è settato genera le canvas nuove
-                echo ("generateSvg(pdfRender.pageMaxNumber);");
-
-            } else {
-
-                $inputParameter = "[";
-                $len = count($svgArray) - 1;
-
-                foreach ($svgArray as $key => $svgValue) {
-
-                    $inputParameter .= "'$svgValue'";
-
-                    if ($key < $len) {
-
-                        $inputParameter .= ", ";
-
-                    }
-
-                }
-                $inputParameter .= "]";
-
-                echo ("printSvg(" . $inputParameter . ");");
-            }
-
-            ?>
-
-            drawSvg = $("#draw-svg-div").children();
 
             $("#canvas-div").css({
                 "height": vp.height + "px",
@@ -207,11 +130,6 @@ if (!($_POST["svgData"] == "{}")) {
 
             });
 
-            $("#saveButton").click(function () {
-
-                <?php echo ("saveSvg(" . $acquistiId . ");"); ?>
-
-            });
 
         });
 
@@ -233,9 +151,6 @@ if (!($_POST["svgData"] == "{}")) {
                     <canvas id="pdf-canvas"></canvas>
 
                 </div>
-                <div id="draw-svg-div">
-
-                </div>
 
             </div>
 
@@ -243,17 +158,6 @@ if (!($_POST["svgData"] == "{}")) {
 
         <section class="tools-and-buttons">
             <div class="drawing-tools">
-
-                <input type="color" id="segment-color">
-                <input type="range" min="1" max="100" id="segment-width">
-
-                <select id="tool-selector">
-
-                    <option value="1">Penna</option>
-                    <option value="2">Evidenziatore</option>
-                    <option value="3">Gomma</option>
-
-                </select>
 
                 <div class="zoom-in-out">
 
@@ -271,12 +175,6 @@ if (!($_POST["svgData"] == "{}")) {
                 <div class="page-label">
 
                     <p>Pagina: <span id="page-num"></span></p>
-
-                </div>
-
-                <div>
-
-                    <button id="saveButton"><i class="fa-solid fa-floppy-disk fa-xl"></i></button>
 
                 </div>
 
