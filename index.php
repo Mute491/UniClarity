@@ -280,6 +280,12 @@ if (!($_POST["svgData"] == "{}")) {
 
                 </div>
 
+                <div>
+
+                    <p id="saveOutput"></p>
+
+                </div>
+
             </div>
 
         </section>

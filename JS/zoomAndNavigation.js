@@ -62,6 +62,15 @@ async function saveSvg(acquistiId){
       });
       
     console.log(response);
-    alert("Salvataggio effettuato");
+
+    if (response.ok) {
+        $("#saveOutput").text("Appunti salvati con successo!");
+        $("#saveOutput").css("color", "green");
+    } else {
+        $("#saveOutput").text("Errore durante il salvataggio degli appunti");
+        $("#saveOutput").css("color", "red");
+        console.error("Errore nella richiesta:", statusCode);
+    }
+    
 
 }
