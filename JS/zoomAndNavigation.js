@@ -39,18 +39,24 @@ function updateSizes(pdfObject){
 
 }
 
-async function saveSvg(acquistiId){
+async function saveSvg(acquistiId, svgDictionary){
 
-    let drawSvg = $("#draw-svg-div").children();
     let svgStringList = {};
     let counter = 0;
 
-    drawSvg.each(function () {
+    for (var key in svgDictionary){
 
-        svgStringList[counter.toString()] = new XMLSerializer().serializeToString(this);
-        counter++;
+        if(svgDictionary[key] === ""){
+            svgStringList[key] = svgDictionary[key];
+        }
+    }
 
-    });
+    // svgDictionary.each(function () {
+
+    //     svgStringList[counter.toString()] = new XMLSerializer().serializeToString(this);
+    //     counter++;
+
+    // });
     
     console.log("contatto il webhook");
     const response = await fetch("https://hooks.zapier.com/hooks/catch/20680064/25varql/", {

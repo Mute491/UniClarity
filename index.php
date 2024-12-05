@@ -93,20 +93,12 @@ if (!($_POST["svgData"] == "{}")) {
             var pdfRender = new PdfRender(url, 0.7, canvas);
 
             let drawSvg;
-
-
-            await pdfRender.renderPage(pageNumber);
-
-            vp = pdfRender.viewport;
+            
+            let svgDictionary = generateSvgDictionary();
 
             <?php
 
-            if ($_POST["svgData"] == "{}") {
-
-                //se non è settato genera le canvas nuove
-                echo ("generateSvg(pdfRender.pageMaxNumber);");
-
-            } else {
+            if ($_POST["svgData"] != "{}") {
 
                 $inputParameter = "[";
                 $len = count($svgArray) - 1;
@@ -124,10 +116,15 @@ if (!($_POST["svgData"] == "{}")) {
                 }
                 $inputParameter .= "]";
 
-                echo ("printSvg(" . $inputParameter . ");");
+                echo ("let svgDictionary = addExistingSvg(" . $inputParameter . ", svgDictionary);");
             }
 
             ?>
+
+            await pdfRender.renderPage(pageNumber);
+
+            vp = pdfRender.viewport;
+
 
             drawSvg = $("#draw-svg-div").children();
 
@@ -157,10 +154,19 @@ if (!($_POST["svgData"] == "{}")) {
 
             $("#prev-page").click(async function () {
                 if (pageNumber > 1) {
+                    let jqueryElement;
+
                     pageNumber--;
 
-                    $(".draw-svg").eq(pageNumber - 1).css("display", "block");
-                    $(".draw-svg").eq(pageNumber).css("display", "none");
+                    jqueryElement = $(svgDictionary["svgN"+(pageNumber-1)]);
+                    jqueryElement.css({
+                        width: $("#canvas-div").width(),
+                        height: $("#canvas-div").height()
+                    });
+
+
+                    $("#draw-svg-div").empty();
+                    $("#draw-svg-div").append(jqueryElement);
 
                     await pdfRender.renderPage(pageNumber);
 
@@ -172,10 +178,19 @@ if (!($_POST["svgData"] == "{}")) {
 
             $("#next-page").click(async function () {
                 if (pageNumber < pdfRender.pageMaxNumber) {
+                    let jqueryElement;
+
                     pageNumber++;
 
-                    $(".draw-svg").eq(pageNumber - 1).css("display", "block");
-                    $(".draw-svg").eq(pageNumber - 2).css("display", "none");
+                    jqueryElement = $(svgDictionary["svgN"+(pageNumber-1)]);
+                    jqueryElement.css({
+                        width: $("#canvas-div").width(),
+                        height: $("#canvas-div").height()
+                    });
+
+
+                    $("#draw-svg-div").empty();
+                    $("#draw-svg-div").append(jqueryElement);
 
                     await pdfRender.renderPage(pageNumber);
 

@@ -81,44 +81,46 @@ function caricaEventi() {
     });
 }
 
-function generateSvg(num) {
+function generateSvgDictionary(num) {
+
+    let svgList = {};
+
     for (let i = 0; i < num; i++) {
-        $("#draw-svg-div").append($("<svg viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet' class='draw-svg'></svg>"));
+        let svgElement = $(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
+        svgElement.attr({
+            id: 'svgN' + i,
+            viewBox: '0 0 100 100',
+            preserveAspectRatio: 'xMidYMid meet',
+            class: 'draw-svg'
+        });
+
+        svgList["svgN"+i] = svgElement.get(0);
+
+        //$("#draw-svg-div").append($("<svg id='svgN"+i+"' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet' class='draw-svg'></svg>"));
     }
 
-    let drawSvg = $("#draw-svg-div").children();
-    drawSvg.each(function () {
-        this.width = $("#canvas-div").width();
-        this.height = $("#canvas-div").height();
-    });
-
-
-    caricaEventi();
+    return svgList;
 }
 
-function printSvg(svgStringArray){
+function addExistingSvg(svgStringArray, svgDictionary){
 
-    let drawSvg;
     let parser = new DOMParser();
     svgStringArray.forEach(element => {
         
         let svgDocument = parser.parseFromString(element, "image/svg+xml");
 
         var svgElement = svgDocument.documentElement;
-        console.log("svg element: "+svgElement);
-
-        // Ora puoi inserire l'elemento SVG nel DOM, ad esempio in un div
-        document.getElementById("draw-svg-div").appendChild(svgElement);
+        svgDictionary[svgElement.id] = svgElement;
 
     });
 
-    drawSvg = $("#draw-svg-div").children();
+    // drawSvg = $("#draw-svg-div").children();
     
-    drawSvg.each(function () {
-        this.width = $("#canvas-div").width();
-        this.height = $("#canvas-div").height();
-    });
-    
-    caricaEventi();
+    // drawSvg.each(function () {
+    //     this.width = $("#canvas-div").width();
+    //     this.height = $("#canvas-div").height();
+    // });
+
+    return svgDictionary;
 
 }
