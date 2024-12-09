@@ -1,24 +1,22 @@
 
-async function zoom(pdfObject, pageNo, scaleChange, isZoomIn) {
+async function zoom(pdfObject, pageNo, scaleChange, svg, isZoomIn) {
 
     if (isZoomIn) {
         pdfObject.scale += scaleChange;
     } else {
         pdfObject.scale -= scaleChange;
     }
-
+    console.log(pdfObject.scale);
     await pdfObject.renderPage(pageNo); 
     // Scala anche il livello SVG per mantenerlo sincronizzato con il PDF
     
-    updateSizes(pdfObject);
+    updateSizes(pdfObject, svg);
 
 }
 
-function updateSizes(pdfObject){
+function updateSizes(pdfObject, svg){
 
     let vp = pdfObject.viewport;
-
-    let drawSvg = $("#draw-svg-div").children();
 
     $("#canvas-div").css({
         "height": vp.height + "px",
@@ -30,12 +28,12 @@ function updateSizes(pdfObject){
         "width": vp.width + "px"
     });
 
-    drawSvg.each(function () {
-        this.width = $("#canvas-div").width();
-        this.height = $("#canvas-div").height();
+    svg.css({
+        width: $("#canvas-div").width(),
+        height: $("#canvas-div").height()
     });
 
-    console.log("fatto!");
+    console.log("dimensioni aggiornate");
 
 }
 
@@ -46,10 +44,13 @@ async function saveSvg(acquistiId, svgDictionary){
 
     for (var key in svgDictionary){
 
-        if(svgDictionary[key] === ""){
-            svgStringList[key] = svgDictionary[key];
+        if(svgDictionary[key].childElementCount > 0){
+            svgStringList[key] = new XMLSerializer().serializeToString(svgDictionary[key]);
         }
+
     }
+
+    console.log(svgStringList);
 
     // svgDictionary.each(function () {
 
@@ -58,25 +59,25 @@ async function saveSvg(acquistiId, svgDictionary){
 
     // });
     
-    console.log("contatto il webhook");
-    const response = await fetch("https://hooks.zapier.com/hooks/catch/20680064/25varql/", {
-        method: "POST",
-        body: JSON.stringify({
-            acquistiId: acquistiId, 
-            content: [JSON.stringify(svgStringList)]
-        }),
-      });
+    // console.log("contatto il webhook");
+    // const response = await fetch("https://hooks.zapier.com/hooks/catch/20680064/25varql/", {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //         acquistiId: acquistiId, 
+    //         content: [JSON.stringify(svgStringList)]
+    //     }),
+    //   });
       
-    console.log(response);
+    // console.log(response);
 
-    if (response.ok) {
-        $("#saveOutput").text("Appunti salvati con successo!");
-        $("#saveOutput").css("color", "green");
-    } else {
-        $("#saveOutput").text("Errore durante il salvataggio degli appunti");
-        $("#saveOutput").css("color", "red");
-        console.error("Errore nella richiesta:", statusCode);
-    }
+    // if (response.ok) {
+    //     $("#saveOutput").text("Appunti salvati con successo!");
+    //     $("#saveOutput").css("color", "green");
+    // } else {
+    //     $("#saveOutput").text("Errore durante il salvataggio degli appunti");
+    //     $("#saveOutput").css("color", "red");
+    //     console.error("Errore nella richiesta:", statusCode);
+    // }
     
 
 }

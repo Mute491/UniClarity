@@ -18,7 +18,9 @@
     aggiunta raccolta del webhook come parametro di input (ragioni di sicurezza)
 */
 
-
+$_POST["fileUrl"] = "book.pdf";
+$_POST["acquistiId"] = 11;
+$_POST["svgData"] = '{"svgN3": "<svg xmlns=\"http://www.w3.org/2000/svg\" id=\"svgN0\" viewBox=\"0 0 100 100\" preserveAspectRatio=\"xMidYMid meet\" class=\"draw-svg\" style=\"width: 428.391px; height: 554.391px;\"><line x1=\"73.61125946044922\" y1=\"25.677499771118164\" x2=\"73.61125946044922\" y2=\"25.910930633544922\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"73.61125946044922\" y1=\"25.910930633544922\" x2=\"73.84469604492188\" y2=\"25.910930633544922\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"73.84469604492188\" y1=\"25.910930633544922\" x2=\"74.078125\" y2=\"25.910930633544922\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"74.078125\" y1=\"25.910930633544922\" x2=\"74.078125\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"74.078125\" y1=\"26.144363403320312\" x2=\"74.31156158447266\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"74.31156158447266\" y1=\"26.144363403320312\" x2=\"74.54499053955078\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"74.54499053955078\" y1=\"26.144363403320312\" x2=\"74.7784194946289\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"74.7784194946289\" y1=\"26.144363403320312\" x2=\"75.01185607910156\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"75.01185607910156\" y1=\"26.144363403320312\" x2=\"75.24528503417969\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"75.24528503417969\" y1=\"26.144363403320312\" x2=\"75.47871398925781\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/></svg>"}';
 if (
     isset($_POST["fileUrl"]) &&
     isset($_POST["acquistiId"])
@@ -81,7 +83,7 @@ if (!($_POST["svgData"] == "{}")) {
 
         import { PdfRender } from './JS/PdfRender.js';
 
-        $(document).ready(async function () {
+        async function loadContent() {
 
             <?php echo ('let url = "' . $fileUrl . '";'); ?>
 
@@ -92,9 +94,14 @@ if (!($_POST["svgData"] == "{}")) {
 
             var pdfRender = new PdfRender(url, 0.7, canvas);
 
-            let drawSvg;
+            let firstSvg;
             
-            let svgDictionary = generateSvgDictionary();
+            let svgDictionary;
+            
+            
+            await pdfRender.getPdfInfo();
+
+            svgDictionary = generateSvgDictionary(pdfRender.getMaxPdfPageNumber());
 
             <?php
 
@@ -116,7 +123,7 @@ if (!($_POST["svgData"] == "{}")) {
                 }
                 $inputParameter .= "]";
 
-                echo ("let svgDictionary = addExistingSvg(" . $inputParameter . ", svgDictionary);");
+                echo ("svgDictionary = addExistingSvg(" . $inputParameter . ", svgDictionary);");
             }
 
             ?>
@@ -124,9 +131,6 @@ if (!($_POST["svgData"] == "{}")) {
             await pdfRender.renderPage(pageNumber);
 
             vp = pdfRender.viewport;
-
-
-            drawSvg = $("#draw-svg-div").children();
 
             $("#canvas-div").css({
                 "height": vp.height + "px",
@@ -138,19 +142,21 @@ if (!($_POST["svgData"] == "{}")) {
                 "width": vp.width + "px"
             });
 
-            //------------ EVENTI -------------
 
             $('#page-num').text(pageNumber);
 
-            drawSvg[pageNumber - 1].style.display = "block";
+            firstSvg = $(svgDictionary["svgN"+(pageNumber-1)]);
 
-            // Aggiorna la dimensione dell'SVG per corrispondere alla pagina PDF
-            drawSvg.each(function () {
-                this.setAttribute('width', vp.width);
-                this.setAttribute('height', vp.height);
-            });
+            // firstSvg.css({
+            //     width: $("#canvas-div").width(),
+            //     height: $("#canvas-div").height(),
+            // });
 
+            $("#draw-svg-div").append(firstSvg);
 
+            caricaEventi();
+
+            //------------ EVENTI -------------
 
             $("#prev-page").click(async function () {
                 if (pageNumber > 1) {
@@ -159,20 +165,16 @@ if (!($_POST["svgData"] == "{}")) {
                     pageNumber--;
 
                     jqueryElement = $(svgDictionary["svgN"+(pageNumber-1)]);
-                    jqueryElement.css({
-                        width: $("#canvas-div").width(),
-                        height: $("#canvas-div").height()
-                    });
 
+                    updateSizes(pdfRender, jqueryElement);
 
                     $("#draw-svg-div").empty();
                     $("#draw-svg-div").append(jqueryElement);
 
                     await pdfRender.renderPage(pageNumber);
 
-                    updateSizes(pdfRender);
-
                     $('#page-num').text(pageNumber);
+                    caricaEventi();
                 }
             });
 
@@ -183,29 +185,24 @@ if (!($_POST["svgData"] == "{}")) {
                     pageNumber++;
 
                     jqueryElement = $(svgDictionary["svgN"+(pageNumber-1)]);
-                    jqueryElement.css({
-                        width: $("#canvas-div").width(),
-                        height: $("#canvas-div").height()
-                    });
 
+                    updateSizes(pdfRender, jqueryElement);
 
                     $("#draw-svg-div").empty();
                     $("#draw-svg-div").append(jqueryElement);
 
                     await pdfRender.renderPage(pageNumber);
 
-                    updateSizes(pdfRender);
-
                     $('#page-num').text(pageNumber);
-
+                    caricaEventi();
                 }
             });
 
             // Zoom In/Out
-            $("#zoomin").click(function () {
+            $("#zoomin").click(async function () {
 
-                if (pdfRender.scale < 3) {
-                    zoom(pdfRender, pageNumber, 0.1, true);
+                if (pdfRender.scale < 1.7) {
+                    await zoom(pdfRender, pageNumber, 0.1, $("#svgN"+(pageNumber-1)), true);
 
                 }
 
@@ -213,9 +210,13 @@ if (!($_POST["svgData"] == "{}")) {
 
             });
 
-            $("#zoomout").click(function () {
+            $("#zoomout").click(async function () {
+
                 if (pdfRender.scale > 0.7) {
-                    zoom(pdfRender, pageNumber, 0.1, false);
+
+                    let currentSvg
+
+                    await zoom(pdfRender, pageNumber, 0.1, $("#svgN"+(pageNumber-1)), false);
 
                 }
                 console.log("zoom out: " + pdfRender.scale);
@@ -224,9 +225,23 @@ if (!($_POST["svgData"] == "{}")) {
 
             $("#saveButton").click(function () {
 
-                <?php echo ("saveSvg(" . $acquistiId . ");"); ?>
+                <?php echo ("saveSvg(" . $acquistiId . ", svgDictionary);"); ?>
 
             });
+
+        }
+
+        $(window).on("load", async function (){
+
+            // Simula il caricamento e poi nasconde il loader
+            setTimeout(function () {
+                document.querySelector('.loader-container').style.display = 'none';
+                document.querySelector('.content').style.display = 'block';
+            }, 3000); // 3 secondi di attesa per il caricamento
+
+            await loadContent();
+
+            $("#loadingScreenSection").hide();
 
         });
 
@@ -236,6 +251,25 @@ if (!($_POST["svgData"] == "{}")) {
 </head>
 
 <body>
+    
+    <section id="loadingScreenSection">
+
+        <div id="loadingScreen">
+
+            <!-- Schermata di caricamento -->
+            <div class="loader-container">
+                <div class="logo"></div>
+            </div>
+
+            <!-- Contenuto del sito -->
+            <div class="content" style="display:none;">
+                <h1>Caricamento del file</h1>
+                <p>Attendi...</p>
+            </div>
+
+        </div>
+
+    </section>
 
     <div id="body-div">
 
@@ -304,6 +338,7 @@ if (!($_POST["svgData"] == "{}")) {
             </div>
 
         </section>
-</body>
+
+    </body>
 
 </html>

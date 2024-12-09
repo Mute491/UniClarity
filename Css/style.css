@@ -4,6 +4,80 @@ html, body {
     font-family: arial;
 }
 
+/*loading screen*/
+
+#loadingScreenSection{
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    /* Sfondo bianco */
+    z-index: 1000;
+}
+
+/* Contenitore del loader */
+.loader-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    /* Sfondo bianco */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+/* Logo animato (può essere un'icona o un'immagine) */
+.logo {
+    width: 60px;
+    height: 60px;
+    background-color: #00bcd4;
+    /* Colore celeste */
+    border-radius: 50%;
+    animation: pulseLogo 1.5s ease-in-out infinite;
+    /* Animazione del logo */
+}
+
+/* Animazione di pulsazione */
+@keyframes pulseLogo {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.1);
+        /* Un leggero ingrandimento */
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Stili del contenuto del sito */
+.content {
+    text-align: center;
+    display: none;
+    /* Nascondi il contenuto fino al termine del caricamento */
+}
+
+.content h1 {
+    color: #333;
+    font-size: 2em;
+}
+
+/*actual page*/
+
 .canvas-and-buttons {
     display: flex;
     flex-direction: column;
@@ -46,7 +120,6 @@ html, body {
     background-color: transparent; /* Trasparente per non coprire il PDF */
     width: 100%; /* Occupa tutto il div */
     height: 100%; /* Occupa tutto il div */
-    display: none; /* Nasconde inizialmente gli SVG */
 }
 
 
