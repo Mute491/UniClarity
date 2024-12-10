@@ -6,10 +6,10 @@ html, body {
 
 /*loading screen*/
 
-#loadingScreenSection{
+#loading-screen-section{
     position: absolute;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
@@ -208,9 +208,20 @@ input[type="color"]::-webkit-color-swatch {
     border-radius: 5px; /* Angoli arrotondati */
 }
 
+input[type="number"] {
+
+    width: 70px; /* Larghezza del select */
+    padding: 10px; /* Padding interno */
+    border: 1px solid #ccc; /* Bordo chiaro */
+    border-radius: 5px; /* Angoli arrotondati */
+    background-color: #fff; /* Colore di sfondo */
+    color: #333; /* Colore del testo */
+    font-size: 16px; /* Dimensione del font */
+
+}
 
 /* Stile per il select */
-select {
+select{
     width: 100px; /* Larghezza del select */
     padding: 10px; /* Padding interno */
     border: 1px solid #ccc; /* Bordo chiaro */
@@ -256,4 +267,5 @@ select:focus {
     flex: 1; /* Questo container occupa tutto lo spazio disponibile al centro */
     /*overflow: hidden;*/ /* Abilita lo scroll se il contenuto supera la dimensione disponibile */
     height: 100%; /* Assicura che il container occupi tutta l'altezza */
+    overflow: auto;
 }

@@ -37,6 +37,20 @@ function updateSizes(pdfObject, svg){
 
 }
 
+async function changePage(pageNumber, jqueryElement, pdfObject){
+
+    updateSizes(pdfObject, jqueryElement);
+
+    $("#draw-svg-div").empty();
+    $("#draw-svg-div").append(jqueryElement);
+
+    await pdfObject.renderPage(pageNumber);
+
+    caricaEventi();
+
+}
+
+
 async function saveSvg(acquistiId, svgDictionary){
 
     let svgStringList = {};

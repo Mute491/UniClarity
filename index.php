@@ -143,7 +143,7 @@ if (!($_POST["svgData"] == "{}")) {
             });
 
 
-            $('#page-num').text(pageNumber);
+            $('#page-num').val(pageNumber);
 
             firstSvg = $(svgDictionary["svgN"+(pageNumber-1)]);
 
@@ -159,49 +159,44 @@ if (!($_POST["svgData"] == "{}")) {
             //------------ EVENTI -------------
 
             $("#prev-page").click(async function () {
+
+                let jqueryElement;
+
                 if (pageNumber > 1) {
-                    let jqueryElement;
 
                     pageNumber--;
 
                     jqueryElement = $(svgDictionary["svgN"+(pageNumber-1)]);
 
-                    updateSizes(pdfRender, jqueryElement);
+                    await changePage(pageNumber, jqueryElement, pdfRender);
 
-                    $("#draw-svg-div").empty();
-                    $("#draw-svg-div").append(jqueryElement);
+                    $('#page-num').val(pageNumber);
 
-                    await pdfRender.renderPage(pageNumber);
-
-                    $('#page-num').text(pageNumber);
-                    caricaEventi();
                 }
             });
 
             $("#next-page").click(async function () {
+
+                let jqueryElement;
+
                 if (pageNumber < pdfRender.pageMaxNumber) {
-                    let jqueryElement;
 
                     pageNumber++;
 
                     jqueryElement = $(svgDictionary["svgN"+(pageNumber-1)]);
 
-                    updateSizes(pdfRender, jqueryElement);
+                    await changePage(pageNumber, jqueryElement, pdfRender);
 
-                    $("#draw-svg-div").empty();
-                    $("#draw-svg-div").append(jqueryElement);
+                    $('#page-num').val(pageNumber);
 
-                    await pdfRender.renderPage(pageNumber);
-
-                    $('#page-num').text(pageNumber);
-                    caricaEventi();
                 }
             });
 
             // Zoom In/Out
-            $("#zoomin").click(async function () {
+            $("#zoom-in").click(async function () {
 
                 if (pdfRender.scale < 1.7) {
+
                     await zoom(pdfRender, pageNumber, 0.1, $("#svgN"+(pageNumber-1)), true);
 
                 }
@@ -210,11 +205,9 @@ if (!($_POST["svgData"] == "{}")) {
 
             });
 
-            $("#zoomout").click(async function () {
+            $("#zoom-out").click(async function () {
 
                 if (pdfRender.scale > 0.7) {
-
-                    let currentSvg
 
                     await zoom(pdfRender, pageNumber, 0.1, $("#svgN"+(pageNumber-1)), false);
 
@@ -229,9 +222,30 @@ if (!($_POST["svgData"] == "{}")) {
 
             });
 
+            $('#page-num').change(async function (){
+
+                let jqueryElement;
+
+                let value = $('#page-num').val();
+
+                if(value <= pdfRender.pageMaxNumber && value > 0){
+
+                    pageNumber = parseInt(value);
+
+                    jqueryElement = $(svgDictionary["svgN"+(pageNumber-1)]);
+
+                    await changePage(pageNumber, jqueryElement, pdfRender);
+
+                }
+                console.log("cambiato");
+
+            });
+
         }
 
         $(window).on("load", async function (){
+
+            $("#body-div").hide();
 
             // Simula il caricamento e poi nasconde il loader
             setTimeout(function () {
@@ -241,7 +255,8 @@ if (!($_POST["svgData"] == "{}")) {
 
             await loadContent();
 
-            $("#loadingScreenSection").hide();
+            $("#loading-screen-section").hide();
+            $("#body-div").show();
 
         });
 
@@ -252,9 +267,9 @@ if (!($_POST["svgData"] == "{}")) {
 
 <body>
     
-    <section id="loadingScreenSection">
+    <section id="loading-screen-section">
 
-        <div id="loadingScreen">
+        <div id="loading-screen">
 
             <!-- Schermata di caricamento -->
             <div class="loader-container">
@@ -306,8 +321,8 @@ if (!($_POST["svgData"] == "{}")) {
 
                 <div class="zoom-in-out">
 
-                    <button id="zoomin"><i class="fa-solid fa-magnifying-glass-plus fa-xl"></i></button>
-                    <button id="zoomout"><i class="fa-solid fa-magnifying-glass-minus fa-xl"></i></button>
+                    <button id="zoom-in"><i class="fa-solid fa-magnifying-glass-plus fa-xl"></i></button>
+                    <button id="zoom-out"><i class="fa-solid fa-magnifying-glass-minus fa-xl"></i></button>
 
                 </div>
                 <div class="navgation-buttons">
@@ -319,7 +334,7 @@ if (!($_POST["svgData"] == "{}")) {
 
                 <div class="page-label">
 
-                    <p>Pagina: <span id="page-num"></span></p>
+                    <p>Pagina: <input type="number" id="page-num"></p>
 
                 </div>
 
