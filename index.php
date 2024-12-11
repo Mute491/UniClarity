@@ -18,12 +18,19 @@
     aggiunta raccolta del webhook come parametro di input (ragioni di sicurezza)
 */
 
-$_POST["fileUrl"] = "book.pdf";
+/*
+
+    Features da aggiungere:
+        sezione per commenti sulla pagina
+
+*/
+
+$_POST["fileUrl"] = "https://pdfobject.com/pdf/sample.pdf";
 $_POST["acquistiId"] = 11;
-$_POST["svgData"] = '{"svgN3": "<svg xmlns=\"http://www.w3.org/2000/svg\" id=\"svgN0\" viewBox=\"0 0 100 100\" preserveAspectRatio=\"xMidYMid meet\" class=\"draw-svg\" style=\"width: 428.391px; height: 554.391px;\"><line x1=\"73.61125946044922\" y1=\"25.677499771118164\" x2=\"73.61125946044922\" y2=\"25.910930633544922\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"73.61125946044922\" y1=\"25.910930633544922\" x2=\"73.84469604492188\" y2=\"25.910930633544922\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"73.84469604492188\" y1=\"25.910930633544922\" x2=\"74.078125\" y2=\"25.910930633544922\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"74.078125\" y1=\"25.910930633544922\" x2=\"74.078125\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"74.078125\" y1=\"26.144363403320312\" x2=\"74.31156158447266\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"74.31156158447266\" y1=\"26.144363403320312\" x2=\"74.54499053955078\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"74.54499053955078\" y1=\"26.144363403320312\" x2=\"74.7784194946289\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"74.7784194946289\" y1=\"26.144363403320312\" x2=\"75.01185607910156\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"75.01185607910156\" y1=\"26.144363403320312\" x2=\"75.24528503417969\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/><line x1=\"75.24528503417969\" y1=\"26.144363403320312\" x2=\"75.47871398925781\" y2=\"26.144363403320312\" stroke=\"#000000\" stroke-width=\"5.1\" stroke-linecap=\"round\"/></svg>"}';
+
 if (
-    isset($_POST["fileUrl"]) &&
-    isset($_POST["acquistiId"])
+    isset($_POST["fileUrl"]) && $_POST["fileUrl"] != "" &&
+    isset($_POST["acquistiId"]) && $_POST["acquistiId"] != null
 ) {
 
     $fileUrl = $_POST["fileUrl"];
@@ -48,7 +55,7 @@ if (
 */
 
 
-if (!($_POST["svgData"] == "{}")) {
+if (!($_POST["svgData"] == "")) {
 
 
     $svgData = $_POST["svgData"];
@@ -85,14 +92,14 @@ if (!($_POST["svgData"] == "{}")) {
 
         async function loadContent() {
 
-            <?php echo ('let url = "' . $fileUrl . '";'); ?>
+            <?php echo ('let url = "' . base64_encode($fileUrl) . '";'); ?>
 
             let vp = null;
             let pageNumber = 1;
 
             let canvas = document.getElementById("pdf-canvas");
 
-            var pdfRender = new PdfRender(url, 0.7, canvas);
+            var pdfRender = new PdfRender(atob(url), 0.7, canvas);
 
             let firstSvg;
             
@@ -105,7 +112,7 @@ if (!($_POST["svgData"] == "{}")) {
 
             <?php
 
-            if ($_POST["svgData"] != "{}") {
+            if ($_POST["svgData"] != "") {
 
                 $inputParameter = "[";
                 $len = count($svgArray) - 1;
@@ -216,7 +223,7 @@ if (!($_POST["svgData"] == "{}")) {
 
             });
 
-            $("#saveButton").click(function () {
+            $("#save-button").click(function () {
 
                 <?php echo ("saveSvg(" . $acquistiId . ", svgDictionary);"); ?>
 
@@ -237,7 +244,12 @@ if (!($_POST["svgData"] == "{}")) {
                     await changePage(pageNumber, jqueryElement, pdfRender);
 
                 }
-                console.log("cambiato");
+                else{
+
+                    $("#output-label").text("Pagina inesistente");
+                    $("#output-label").css("color", "red");
+
+                }
 
             });
 
@@ -340,13 +352,13 @@ if (!($_POST["svgData"] == "{}")) {
 
                 <div>
 
-                    <button id="saveButton"><i class="fa-solid fa-floppy-disk fa-xl"></i></button>
+                    <button id="save-button"><i class="fa-solid fa-floppy-disk fa-xl"></i></button>
 
                 </div>
 
                 <div>
 
-                    <p id="saveOutput"></p>
+                    <p id="output-label"></p>
 
                 </div>
 
