@@ -76,14 +76,13 @@ async function saveSvg(acquistiId, svgDictionary){
         }),
       });
       
-    console.log(response);
 
     if (response.ok) {
-        $("#saveOutput").text("Appunti salvati con successo!");
-        $("#saveOutput").css("color", "green");
+        $("#output-label").text("Appunti salvati con successo!");
+        $("#output-label").css("color", "green");
     } else {
-        $("#saveOutput").text("Errore durante il salvataggio degli appunti");
-        $("#saveOutput").css("color", "red");
+        $("#output-label").text("Errore durante il salvataggio degli appunti");
+        $("#output-label").css("color", "red");
         console.error("Errore nella richiesta:", statusCode);
     }
     
