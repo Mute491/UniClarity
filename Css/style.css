@@ -4,6 +4,80 @@ html, body {
     font-family: arial;
 }
 
+/*loading screen*/
+
+#loading-screen-section{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    /* Sfondo bianco */
+    z-index: 1000;
+}
+
+/* Contenitore del loader */
+.loader-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    /* Sfondo bianco */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+/* Logo animato (può essere un'icona o un'immagine) */
+.logo {
+    width: 60px;
+    height: 60px;
+    background-color: #00bcd4;
+    /* Colore celeste */
+    border-radius: 50%;
+    animation: pulseLogo 1.5s ease-in-out infinite;
+    /* Animazione del logo */
+}
+
+/* Animazione di pulsazione */
+@keyframes pulseLogo {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.1);
+        /* Un leggero ingrandimento */
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Stili del contenuto del sito */
+.content {
+    text-align: center;
+    display: none;
+    /* Nascondi il contenuto fino al termine del caricamento */
+}
+
+.content h1 {
+    color: #333;
+    font-size: 2em;
+}
+
+/*actual page*/
+
 .canvas-and-buttons {
     display: flex;
     flex-direction: column;
@@ -46,7 +120,6 @@ html, body {
     background-color: transparent; /* Trasparente per non coprire il PDF */
     width: 100%; /* Occupa tutto il div */
     height: 100%; /* Occupa tutto il div */
-    display: none; /* Nasconde inizialmente gli SVG */
 }
 
 
@@ -135,9 +208,20 @@ input[type="color"]::-webkit-color-swatch {
     border-radius: 5px; /* Angoli arrotondati */
 }
 
+input[type="number"] {
+
+    width: 70px; /* Larghezza del select */
+    padding: 10px; /* Padding interno */
+    border: 1px solid #ccc; /* Bordo chiaro */
+    border-radius: 5px; /* Angoli arrotondati */
+    background-color: #fff; /* Colore di sfondo */
+    color: #333; /* Colore del testo */
+    font-size: 16px; /* Dimensione del font */
+
+}
 
 /* Stile per il select */
-select {
+select{
     width: 100px; /* Larghezza del select */
     padding: 10px; /* Padding interno */
     border: 1px solid #ccc; /* Bordo chiaro */
@@ -183,4 +267,5 @@ select:focus {
     flex: 1; /* Questo container occupa tutto lo spazio disponibile al centro */
     /*overflow: hidden;*/ /* Abilita lo scroll se il contenuto supera la dimensione disponibile */
     height: 100%; /* Assicura che il container occupi tutta l'altezza */
+    overflow: auto;
 }

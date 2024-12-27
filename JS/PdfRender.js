@@ -3,12 +3,6 @@ import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.10
 export class PdfRender {
 
     constructor(pdfUrl, scale, pdfCanvas) {
-        
-        this.initialize(pdfUrl, scale, pdfCanvas);
-
-    }
-
-    async initialize(pdfUrl, scale, pdfCanvas){
 
         this.pdfjsLib = window['pdfjs-dist/build/pdf'];
 
@@ -24,6 +18,10 @@ export class PdfRender {
         this.viewport = null;
         this.pageMaxNumber = 0;
 
+    }
+
+    async getPdfInfo(){
+
         await this.pdfjsLib.getDocument(this.url).promise.then(pdfDoc => {
 
             //capire come mettere in attributo pdfDoc
@@ -34,9 +32,15 @@ export class PdfRender {
 
     }
 
-    getPageViewport(page) {
+    getPageViewport() {
 
         return this.viewport;
+    }
+
+    getMaxPdfPageNumber(){
+
+        return this.pageMaxNumber;
+
     }
 
     setScale(newScale) {
@@ -64,8 +68,12 @@ export class PdfRender {
                 viewport: this.viewport
             };
 
-            page.render(renderContext); // Renderizza la pagina
+            return page.render(renderContext).promise; // Renderizza la pagina
+        }).then(function(){
+
+            console.log("render concluso");
+
         });
-        console.log("render concluso");
+        
     }
 }
