@@ -1,0 +1,52 @@
+/* Impostazioni per la section di classe content */
+#content {
+    display: flex;
+    justify-content: flex-start;  /* Allinea il contenuto a sinistra */
+    align-items: flex-start;      /* Allinea verticalmente in alto */
+    height: 100vh;                /* Imposta l'altezza della finestra del browser */
+    position: relative; /* Permette di posizionare l'input di zoom in modo fisso */
+    font-family: arial;
+}
+
+/* Impostazioni per le pagine */
+#pages {
+    display: flex;
+    flex-direction: column; /* Le pagine sono una sotto l'altra */
+    gap: 20px;              /* Aggiungi uno spazio tra le pagine */
+    margin-right: 200px;    /* Distanza a destra per fare spazio allo zoom */
+}
+
+/* Impostazioni per ogni div con la classe "page" */
+.page {
+    border: 1px solid black; /* Bordo nero di 1px */
+    padding: 10px;            /* Spazio interno */
+    display: flex;
+    justify-content: center;  /* Allinea il contenuto al centro orizzontalmente */
+    align-items: center;      /* Allinea il contenuto al centro verticalmente */
+}
+
+/* Impostazioni per i canvas per riempire le div */
+canvas {
+    width: 100%;  /* Rende il canvas largo quanto la div */
+    height: 100%; /* Rende il canvas alto quanto la div */
+}
+
+/* Impostazioni per la sezione tools */
+#tools {
+    position: fixed;        /* Rende la sezione fissa sul lato destro */
+    top: 50%;               /* Posiziona la sezione al centro verticale */
+    right: 20px;            /* Posiziona la sezione a destra con uno spazio di 20px */
+    transform: translateY(-50%); /* Centra verticalmente la sezione */
+}
+
+/* Stile per l'input range */
+#zoom-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    flex-direction: column;
+}
+
+input[type="range"] {
+    width: 150px; /* Imposta la larghezza dell'input */
+}

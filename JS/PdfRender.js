@@ -32,20 +32,16 @@ export class PdfRender {
 
     }
 
-    getPageViewport() {
-
-        return this.viewport;
-    }
-
-    getMaxPdfPageNumber(){
-
-        return this.pageMaxNumber;
-
-    }
-
     setScale(newScale) {
 
         this.scale = newScale;
+    }
+
+    setCanvas(newCanvas){
+
+        this.canvas = newCanvas;
+        this.ctx = newCanvas.getContext("2d");
+
     }
 
     async renderPage(num) {

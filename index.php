@@ -62,7 +62,8 @@ if (!($_POST["svgData"] == "{}")) {
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="Css/style.css">
+    <link rel="stylesheet" href="Css/stylePdfViewer.css">
+    <link rel="stylesheet" herf="Css/styleLoadingPopUp.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -92,7 +93,7 @@ if (!($_POST["svgData"] == "{}")) {
             
             await pdfRender.getPdfInfo();
 
-            svgDictionary = generateSvgDictionary(pdfRender.getMaxPdfPageNumber());
+            svgDictionary = generateSvgDictionary(pdfRender.pageMaxNumber());
 
             <?php
 
