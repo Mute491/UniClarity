@@ -2,9 +2,14 @@
 <?php
 
 $_POST["fileUrl"] = "https://ontheline.trincoll.edu/images/bookdown/sample-local-pdf.pdf";
-if (isset($_POST["fileUrl"])) {
+
+$_POST["numPages"] = "20";
+
+if (isset($_POST["fileUrl"]) && isset($_POST["numPages"])) {
 
     $fileUrl = $_POST["fileUrl"];
+
+    $numPages = $_POST["numPages"];
 
 } else {
 
@@ -40,48 +45,75 @@ if (isset($_POST["fileUrl"])) {
 
             import { PdfRender } from './JS/PdfRender.js';
 
-            async function zoomPages(pdfRender, isTwoPages){
-
-                let canvasPage1 = document.getElementById("page-1");
-                let canvasPage2 = document.getElementById("page-2");
+            async function zoomPages(pdfRender) {
                 
-                pdfRender.setCanvas(canvasPage1);
-                var value = $(this).val();  // Ottieni il valore dell'input range
-                pdfRender.setScale(value);
-                await pdfRender.renderPage(1);
+                let scale = $('#zoom').val();
+                let pages = $('#pages .page'); // Seleziona tutte le pagine
 
+                for (let i = 0; i < pages.length; i++) {
+                    console.log(i + 1);
 
-                if(isTwoPages){
-                    pdfRender.setCanvas(canvasPage2);
-                    await pdfRender.renderPage(2);
+                    // Seleziona il canvas all'interno della div corrente
+                    let canvas = $(pages[i]).find('canvas');
+                    // Converte il canvas in un oggetto JavaScript nativo
+                    let canvasElement = canvas.get(0);
+
+                    pdfRender.setCanvas(canvasElement);
+                    pdfRender.setScale(scale);
+
+                    // Aspetta il rendering della pagina prima di passare alla successiva
+                    await pdfRender.renderPage(i + 1);
+                }
+            }
+
+            async function addNewPages(pdfRender){
+
+                <?php
+
+                    if($numPages != "all"){
+
+                        echo("let numberOfCanvas = ".$_POST["numPages"].";");
+                        echo("for (let i = 0; i < numberOfCanvas && i < pdfRender.pageMaxNumber; i++) {");
+
+                    }
+                    else{
+
+                        echo("for (let i = 0; i < pdfRender.pageMaxNumber; i++) {");
+
+                    }
+                    
+                    
+                ?>
+            
+                    // Crea un elemento <canvas> senza attributi
+                    let canvas = $('<canvas></canvas>');
+
+                    // Crea una div con classe "page" e inserisci il canvas all'interno
+                    let pageDiv = $('<div></div>')
+                        .addClass('page') // Aggiungi la classe "page"
+                        .append(canvas); // Appendi il canvas
+                    
+                    pdfRender.setCanvas(canvas.get(0));
+                    await pdfRender.renderPage(i+1);
+
+                    // Appendi la div con il canvas al contenitore
+                    $('#pages').append(pageDiv);
                 }
 
             }
-
 
             async function loadContent(){
 
                 <?php echo ('let url = "' . base64_encode($fileUrl) . '";'); ?>
 
-                let canvasPage1 = document.getElementById("page-1");
-                let canvasPage2 = document.getElementById("page-2");
-
-                var pdfRender = new PdfRender(atob(url), 0.7, canvasPage1);
+                var pdfRender = new PdfRender(atob(url), 0.7, null);
                 await pdfRender.getPdfInfo();
 
-                await pdfRender.renderPage(1);
+                $("#zoom").change(async function () {
+                    await zoomPages(pdfRender);
+                });
 
-                if(pdfRender.pageMaxNumber > 1){
-
-                    pdfRender.setCanvas(canvasPage2);
-                    await pdfRender.renderPage(2);
-
-                    $('#zoom').on('input', zoomPages(pdfRender, true));
-                }
-                else{
-
-                    $('#zoom').on('input', zoomPages(pdfRender, false));
-                }
+                await addNewPages(pdfRender);
 
             }
 
@@ -129,18 +161,6 @@ if (isset($_POST["fileUrl"])) {
         <section id="content">
 
             <section id="pages">
-
-                <div class="page">
-
-                    <canvas id="page-1"></canvas>
-
-                </div>
-
-                <div class="page">
-
-                    <canvas id="page-2"></canvas>
-
-                </div>
         
             </section>
 

@@ -12,7 +12,10 @@ export class PdfRender {
         this.scale = scale;
         this.url = pdfUrl;
         this.canvas = pdfCanvas;
-        this.ctx = pdfCanvas.getContext("2d");
+        if(pdfCanvas !== null){
+            this.ctx = pdfCanvas.getContext("2d");
+        }
+        
 
         this.pdf = null;
         this.viewport = null;
