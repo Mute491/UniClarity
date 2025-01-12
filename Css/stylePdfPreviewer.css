@@ -1,52 +1,62 @@
-/* Impostazioni per la section di classe content */
-#content {
-    display: flex;
-    justify-content: flex-start;  /* Allinea il contenuto a sinistra */
-    align-items: flex-start;      /* Allinea verticalmente in alto */
-    height: 100vh;                /* Imposta l'altezza della finestra del browser */
-    position: relative; /* Permette di posizionare l'input di zoom in modo fisso */
-    font-family: arial;
+/* Impostazioni di base per il corpo della pagina */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    align-items: center;      /* Centra verticalmente */
+    min-height: 100vh;        /* Imposta la visualizzazione della pagina intera */
 }
 
-/* Impostazioni per le pagine */
-#pages {
-    display: flex;
-    flex-direction: column; /* Le pagine sono una sotto l'altra */
-    gap: 20px;              /* Aggiungi uno spazio tra le pagine */
-    margin-right: 200px;    /* Distanza a destra per fare spazio allo zoom */
+/* Contenuto della pagina una volta caricato */
+.content {
+    display: block;
 }
 
-/* Impostazioni per ogni div con la classe "page" */
-.page {
-    border: 1px solid black; /* Bordo nero di 1px */
-    padding: 10px;            /* Spazio interno */
-    display: flex;
-    justify-content: center;  /* Allinea il contenuto al centro orizzontalmente */
-    align-items: center;      /* Allinea il contenuto al centro verticalmente */
-}
-
-/* Impostazioni per i canvas per riempire le div */
-canvas {
-    width: 100%;  /* Rende il canvas largo quanto la div */
-    height: 100%; /* Rende il canvas alto quanto la div */
-}
-
-/* Impostazioni per la sezione tools */
+/* Posizione fissa della sezione tools */
 #tools {
-    position: fixed;        /* Rende la sezione fissa sul lato destro */
-    top: 50%;               /* Posiziona la sezione al centro verticale */
-    right: 20px;            /* Posiziona la sezione a destra con uno spazio di 20px */
-    transform: translateY(-50%); /* Centra verticalmente la sezione */
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 100;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente gli elementi */
+    align-items: center; /* Centra verticalmente gli elementi */
+    width:100%;
 }
 
-/* Stile per l'input range */
+/* Stilizzazione per la sezione zoom */
 #zoom-div {
     display: flex;
     align-items: center;
-    justify-content: center;    
-    flex-direction: column;
+    gap: 10px;
 }
 
-input[type="range"] {
-    width: 150px; /* Imposta la larghezza dell'input */
+#zoom-div span {
+    font-size: 14px;
+}
+
+#zoom-div input {
+    flex-grow: 1;
+}
+
+/* Styling per le pagine del PDF */
+#pages {
+    align-items: center; /* Allinea le pagine al centro orizzontalmente */
+    width: 100%; /* Puoi regolare la larghezza per centrare la sezione */
+    margin-top: 20px; /* Distanza dalla sezione tools */
+    padding: 0 10px; /* Distanza laterale per il padding */
+}
+
+.page {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 100%; /* Imposta una larghezza per le pagine */
+
+    display: flex;
+    justify-content: center;  /* Centra orizzontalmente il canvas */
+    align-items: center;      /* Centra verticalmente il canvas */
 }

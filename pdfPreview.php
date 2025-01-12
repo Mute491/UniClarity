@@ -160,24 +160,23 @@ if (isset($_POST["fileUrl"]) && isset($_POST["numPages"])) {
     
         <section id="content">
 
-            <section id="pages">
-        
-            </section>
-
             <section id="tools">
 
                 <div id="zoom-div">
-                    
+    
                     <span>Zoom:</span>
                     <p> 
                         <i class="fa-solid fa-minus"></i>
                         <input type="range" name="zoom" id="zoom" min="0.7" max="1.7" step="0.1" value="0.7">
                         <i class="fa-solid fa-plus"></i>
                     </p>
-                    
-
+    
                 </div>
 
+            </section>
+
+            <section id="pages">
+        
             </section>
 
         </section>
