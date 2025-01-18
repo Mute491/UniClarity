@@ -8,6 +8,9 @@
 
     import { PdfRender } from './JS/PdfRender.js';
 
+    var isMultipage = false;
+    var pageNumber = 1;
+
     function hideDrawingTools(){
 
         $("#segment-color").hide();
@@ -17,65 +20,94 @@
 
     }
 
+    async function printPages(pdfObject){
+
+        let canvases = $('#pdf-canvas-div').children();
+
+        for (let [index, currentCanvas] of canvases.toArray().entries()) {
+
+            console.log(index);
+
+            let htmlCanvas = $(currentCanvas).get(0);  // Ottieni l'elemento DOM
+
+            if((pageNumber-1) < pdfObject.pageMaxNumber){
+
+                $(currentCanvas).show();
+
+                pdfObject.setCanvas(htmlCanvas);  // Imposta il canvas
+                await pdfObject.renderPage(pageNumber);  // Attende che la pagina venga renderizzata
+            
+                pageNumber++;  // Incrementa il numero di pagina
+            }
+            else{
+
+                $(currentCanvas).hide();
+
+            }
+        }
+
+    }
+
     async function loadContent() {
 
         <?php echo ('let url = "' . base64_encode($fileUrl) . '";'); ?>
 
         let vp = null;
-        let pageNumber = 1;
 
         let canvas = document.getElementById("pdf-canvas");
 
-        var pdfRender = new PdfRender(atob(url), 0.7, canvas);
+        var pdfRender = new PdfRender(atob(url), 0.7, null);
 
         let firstSvg;
     
         let svgDictionary;
+
+        let numberOfPagesInView = 1;
+
     
         await pdfRender.getPdfInfo();
 
-        await pdfRender.renderPage(pageNumber);
-
-        vp = pdfRender.viewport;
+        // vp = pdfRender.viewport;
 
         hideDrawingTools();
 
-        $("#canvas-div").css({
-            "height": vp.height + "px",
-            "width": vp.width + "px"
-        });
+        await printPages(pdfRender);
 
-        $("#pdf-canvas-div").css({
-            "height": vp.height + "px",
-            "width": vp.width + "px"
-        });
+        // $("#canvas-div").css({
+        //     "height": vp.height + "px",
+        //     "width": vp.width + "px"
+        // });
 
-        $('#page-num').val(pageNumber);
+        // $("#pdf-canvas-div").css({
+        //     "height": vp.height + "px",
+        //     "width": vp.width + "px"
+        // });
+
+        $('#page-num').val(pageNumber-1);
 
         //------------ EVENTI -------------
 
         $("#prev-page").click(async function () {
 
-            if (pageNumber > 1) {
+            if (pageNumber-1 > 1) {
 
-                pageNumber--;
+                pageNumber -= numberOfPagesInView + 1;
 
-                await changePageReadMode(pageNumber, pdfRender);
+                await printPages(pdfRender);
 
-                $('#page-num').val(pageNumber);
+                $('#page-num').val(pageNumber-1);
 
             }
+
         });
 
         $("#next-page").click(async function () {
 
-            if (pageNumber < pdfRender.pageMaxNumber) {
+            if ((pageNumber-1) < pdfRender.pageMaxNumber) {
 
-                pageNumber++;
+                await printPages(pdfRender);
 
-                await changePageReadMode(pageNumber, pdfRender);
-
-                $('#page-num').val(pageNumber);
+                $('#page-num').val(pageNumber-1);
 
             }
         });
@@ -100,13 +132,8 @@
                 await zoom(pdfRender, pageNumber, 0.1, $("#svgN"+(pageNumber-1)), false);
 
             }
+
             console.log("zoom out: " + pdfRender.scale);
-
-        });
-
-        $("#save-button").click(function () {
-
-            <?php echo ("saveSvg(" . $acquistiId . ", svgDictionary);"); ?>
 
         });
 
@@ -125,6 +152,42 @@
 
                 $("#output-label").text("Pagina inesistente");
                 $("#output-label").css("color", "red");
+
+            }
+
+        });
+
+        $("#multipage-button").click(async function () {
+
+            if(!isMultipage){
+
+                isMultipage = true;
+
+                pageNumber -= numberOfPagesInView;
+
+                $("#multipage-button-icon").removeClass("fa-solid");
+                $("#multipage-button-icon").addClass("fa-regular");
+
+                $('#pdf-canvas-div').append('<canvas id="pdf-canvas2"></canvas>');
+
+                printPages(pdfRender);
+
+                numberOfPagesInView = 2;
+
+            }
+            else{
+
+                pageNumber -= numberOfPagesInView;
+
+                isMultipage = false;
+                $("#multipage-button-icon").removeClass("fa-regular");
+                $("#multipage-button-icon").addClass("fa-solid");
+                
+                $('#pdf-canvas2').remove();
+
+                printPages(pdfRender);
+
+                numberOfPagesInView = 1;
 
             }
 

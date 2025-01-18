@@ -162,6 +162,7 @@ if (!($_POST["svgData"] == "{}")) {
                 <div>
 
                     <button id="save-button"><i class="fa-solid fa-floppy-disk fa-xl"></i></button>
+                    <button id="multipage-button"><i id="multipage-button-icon" class="fa-solid fa-file fa-xl"></i></button>
 
                 </div>
 

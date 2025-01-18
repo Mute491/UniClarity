@@ -79,6 +79,8 @@
 
         $("#draw-svg-div").append(firstSvg);
 
+        $("#multipage-button").hide();
+
         caricaEventi();
 
         //------------ EVENTI -------------

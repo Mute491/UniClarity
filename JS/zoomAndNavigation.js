@@ -37,19 +37,6 @@ function updateSizes(pdfObject, svg){
 
 }
 
-async function changePageReadMode(pageNumber, pdfObject){
-
-    let vp = pdfObject.viewport;
-
-    $("#canvas-div").css({
-        "height": vp.height + "px",
-        "width": vp.width + "px"
-    });
-
-    await pdfObject.renderPage(pageNumber);
-
-}
-
 async function changePage(pageNumber, jqueryElement, pdfObject){
 
     updateSizes(pdfObject, jqueryElement);
