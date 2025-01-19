@@ -22,11 +22,11 @@
 
     async function printPages(pdfObject){
 
+        console.log("during print: "+pageNumber);
+
         let canvases = $('#pdf-canvas-div').children();
 
         for (let [index, currentCanvas] of canvases.toArray().entries()) {
-
-            console.log(index);
 
             let htmlCanvas = $(currentCanvas).get(0);  // Ottieni l'elemento DOM
 
@@ -45,6 +45,8 @@
 
             }
         }
+
+        $('#page-num').val(pageNumber-1);
 
     }
 
@@ -83,19 +85,17 @@
         //     "width": vp.width + "px"
         // });
 
-        $('#page-num').val(pageNumber-1);
-
         //------------ EVENTI -------------
 
         $("#prev-page").click(async function () {
 
-            if (pageNumber-1 > 1) {
+            if ((pageNumber-1) > 1) {
 
-                pageNumber -= numberOfPagesInView + 1;
+                pageNumber -= numberOfPagesInView;
+                console.log("pages in view: "+numberOfPagesInView);
+                console.log("pre print: "+pageNumber);
 
                 await printPages(pdfRender);
-
-                $('#page-num').val(pageNumber-1);
 
             }
 
@@ -106,8 +106,6 @@
             if ((pageNumber-1) < pdfRender.pageMaxNumber) {
 
                 await printPages(pdfRender);
-
-                $('#page-num').val(pageNumber-1);
 
             }
         });
