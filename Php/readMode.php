@@ -20,11 +20,11 @@
 
     }
 
-    async function printPages(pdfObject){
+    async function printPages(pdfObject, pdfCanvasesDivId){
 
         console.log("during print: "+pageNumber);
 
-        let canvases = $('#pdf-canvas-div').children();
+        let canvases = $(pdfCanvasesDivId).children();
 
         for (let [index, currentCanvas] of canvases.toArray().entries()) {
 
@@ -47,6 +47,24 @@
         }
 
         $('#page-num').val(pageNumber-1);
+
+    }
+
+    async function zoomReadMode(pdfObject, scaleChange, pdfCanvasesDivId, numberOfPagesInView, isZoomIn){
+
+        if (isZoomIn) {
+
+            pdfObject.scale += scaleChange;
+
+        } else {
+
+            pdfObject.scale -= scaleChange;
+
+        }
+
+        pageNumber -= numberOfPagesInView;
+
+        await printPages(pdfObject, pdfCanvasesDivId);
 
     }
 
@@ -73,7 +91,7 @@
 
         hideDrawingTools();
 
-        await printPages(pdfRender);
+        await printPages(pdfRender, "#pdf-canvas-div");
 
         // $("#canvas-div").css({
         //     "height": vp.height + "px",
@@ -89,13 +107,11 @@
 
         $("#prev-page").click(async function () {
 
-            if ((pageNumber-1) > 1) {
+            if ((pageNumber-1) > numberOfPagesInView) {
 
-                pageNumber -= numberOfPagesInView;
-                console.log("pages in view: "+numberOfPagesInView);
-                console.log("pre print: "+pageNumber);
+                pageNumber -= numberOfPagesInView + 1;
 
-                await printPages(pdfRender);
+                await printPages(pdfRender, "#pdf-canvas-div");
 
             }
 
@@ -105,7 +121,7 @@
 
             if ((pageNumber-1) < pdfRender.pageMaxNumber) {
 
-                await printPages(pdfRender);
+                await printPages(pdfRender, "#pdf-canvas-div");
 
             }
         });
@@ -115,7 +131,7 @@
 
             if (pdfRender.scale < 1.7) {
 
-                await zoom(pdfRender, pageNumber, 0.1, $("#svgN"+(pageNumber-1)), true);
+                await zoomReadMode(pdfRender, 0.1, "#pdf-canvas-div", numberOfPagesInView, true);
 
             }
 
@@ -127,7 +143,7 @@
 
             if (pdfRender.scale > 0.7) {
 
-                await zoom(pdfRender, pageNumber, 0.1, $("#svgN"+(pageNumber-1)), false);
+                await zoomReadMode(pdfRender, 0.1, "#pdf-canvas-div", numberOfPagesInView, false);
 
             }
 
@@ -143,7 +159,10 @@
 
                 pageNumber = parseInt(value);
 
-                await changePageReadMode(pageNumber, pdfRender);
+                await printPages(pdfRender, "#pdf-canvas-div");
+
+                $("#output-label").text("");
+                $("#output-label").css("color", "white");
 
             }
             else{
@@ -168,7 +187,7 @@
 
                 $('#pdf-canvas-div').append('<canvas id="pdf-canvas2"></canvas>');
 
-                printPages(pdfRender);
+                await printPages(pdfRender, "#pdf-canvas-div");
 
                 numberOfPagesInView = 2;
 
@@ -183,7 +202,7 @@
                 
                 $('#pdf-canvas2').remove();
 
-                printPages(pdfRender);
+                await printPages(pdfRender, "#pdf-canvas-div");
 
                 numberOfPagesInView = 1;
 
