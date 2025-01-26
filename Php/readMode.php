@@ -87,22 +87,15 @@
     
         await pdfRender.getPdfInfo();
 
-        // vp = pdfRender.viewport;
-
         hideDrawingTools();
 
         await printPages(pdfRender, "#pdf-canvas-div");
 
-        // $("#canvas-div").css({
-        //     "height": vp.height + "px",
-        //     "width": vp.width + "px"
-        // });
+        $("#canvas-div").css("border", "solid 0px black");
+        $("#pdf-canvas-div").css("border", "solid 0px black");
 
-        // $("#pdf-canvas-div").css({
-        //     "height": vp.height + "px",
-        //     "width": vp.width + "px"
-        // });
 
+        
         //------------ EVENTI -------------
 
         $("#prev-page").click(async function () {
