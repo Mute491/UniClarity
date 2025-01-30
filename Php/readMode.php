@@ -10,6 +10,8 @@
 
     var isMultipage = false;
     var pageNumber = 1;
+    var toggleTools = true;
+    var toolsDivWidth = "15%";
 
     function hideDrawingTools(){
 
@@ -17,6 +19,48 @@
         $("#segment-width").hide();
         $("#tool-selector").hide();
         $("#save-button").hide();
+
+    }
+
+    function toggleToolsAndButtons(toggle){
+
+        if(toggle){
+
+            $("#zoom-in").hide();
+            $("#zoom-out").hide();
+            $("#prev-page").hide();
+            $("#next-page").hide();
+            $("#page-counter-div").hide();
+            $("#multipage-button").hide();
+
+            $(".tools-and-buttons").animate({
+                "flex-basis": "3%"
+            });
+
+            $("#hide-tools-button-icon").removeClass("fa-bars-staggered");
+            $("#hide-tools-button-icon").addClass("fa-bars");
+
+        }
+        else{
+
+            
+
+            $(".tools-and-buttons").animate({
+                "flex-basis": toolsDivWidth
+            });
+
+            $("#zoom-in").show();
+            $("#zoom-out").show();
+            $("#prev-page").show();
+            $("#next-page").show();
+            $("#page-counter-div").show();
+            $("#multipage-button").show();
+
+
+            $("#hide-tools-button-icon").removeClass("fa-bars");
+            $("#hide-tools-button-icon").addClass("fa-bars-staggered");
+
+        }
 
     }
 
@@ -200,6 +244,13 @@
                 numberOfPagesInView = 1;
 
             }
+
+        });
+
+        $("#hide-tools-button").click(function () {
+
+            toggleToolsAndButtons(toggleTools);
+            toggleTools = !toggleTools;
 
         });
 

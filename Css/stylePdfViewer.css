@@ -199,7 +199,18 @@ select:focus {
 
 
 .tools-and-buttons {
-    flex: 0 0 30%; /* Mantiene una larghezza fissa di 100px per questi container */
+    flex: 0 0 15%; /* Mantiene una larghezza fissa di 30% per questi container */
+    /* border: 2px solid lightgray; */
+    box-shadow: -4px 0 8px rgba(0, 123, 255, 0.6); /* Ombra celeste a sinistra */
+    border-top-left-radius: 20px; /* Arrotonda il bordo in alto a sinistra */
+    border-bottom-left-radius: 20px; /* Arrotonda il bordo in alto a destra */
+    overflow: hidden; /* Per evitare che il contenuto fuoriuscisca durante l'animazione */
+}
+
+.drawing-tools{
+
+    padding:10px;
+
 }
 
 .zoom-in-out, .navigation-buttons{

@@ -144,6 +144,7 @@ if (!($_POST["svgData"] == "{}")) {
 
                     <button id="zoom-in"><i class="fa-solid fa-magnifying-glass-plus fa-xl"></i></button>
                     <button id="zoom-out"><i class="fa-solid fa-magnifying-glass-minus fa-xl"></i></button>
+                    <button id="hide-tools-button"><i id="hide-tools-button-icon" class="fa-solid fa-bars-staggered fa-xl"></i></button>
 
                 </div>
                 <div class="navgation-buttons">
@@ -153,7 +154,7 @@ if (!($_POST["svgData"] == "{}")) {
 
                 </div>
 
-                <div class="page-label">
+                <div id="page-counter-div" class="page-label">
 
                     <p>Pagina: <input type="number" id="page-num"></p>
 
@@ -163,6 +164,11 @@ if (!($_POST["svgData"] == "{}")) {
 
                     <button id="save-button"><i class="fa-solid fa-floppy-disk fa-xl"></i></button>
                     <button id="multipage-button"><i id="multipage-button-icon" class="fa-solid fa-file fa-xl"></i></button>
+
+                </div>
+                <div>
+
+                    
 
                 </div>
 
