@@ -1,4 +1,6 @@
 
+<link rel="stylesheet" href="Css/stylePdfViewerStudyMode.css">
+
 <script type="module" src="JS/PdfRender.js"></script>
 <script src="JS/drawing.js"></script>
 <script src="JS/zoomAndNavigation.js"></script>
@@ -8,6 +10,66 @@
 <script type="module">
 
     import { PdfRender } from './JS/PdfRender.js';
+
+    var toggleTools = true;
+    var toolsDivWidth = "23%";
+
+    function hideReadingTools(){
+
+        $("#multipage-button").hide();
+
+    }
+
+    function toggleToolsAndButtons(toggle){
+
+        if(toggle){
+
+            $("#segment-color").hide();
+            $("#segment-width").hide();
+            $("#tool-selector").hide();
+            $("#zoom-in").hide();
+            $("#zoom-out").hide();
+            $("#prev-page").hide();
+            $("#next-page").hide();
+            $("#page-counter-div").hide();
+            $("#save-button").hide();
+            $("#output-label").hide();
+
+            $(".tools-and-buttons").animate({
+                "flex-basis": "3%"
+            });
+
+            $("#hide-tools-button-icon").removeClass("fa-bars-staggered");
+            $("#hide-tools-button-icon").addClass("fa-bars");
+
+        }
+        else{
+
+    
+
+            $(".tools-and-buttons").animate({
+                "flex-basis": toolsDivWidth
+            }, 400, function (){
+
+                $("#segment-color").show();
+                $("#segment-width").show();
+                $("#tool-selector").show();
+                $("#zoom-in").show();
+                $("#zoom-out").show();
+                $("#prev-page").show();
+                $("#next-page").show();
+                $("#page-counter-div").show();
+                $("#save-button").show();
+                $("#output-label").show();
+
+                $("#hide-tools-button-icon").removeClass("fa-bars");
+                $("#hide-tools-button-icon").addClass("fa-bars-staggered");
+
+            });
+
+        }
+
+    }
 
     async function loadContent() {
 
@@ -170,6 +232,13 @@
                 $("#output-label").css("color", "red");
 
             }
+
+        });
+
+        $("#hide-tools-button").click(function () {
+
+            toggleToolsAndButtons(toggleTools);
+            toggleTools = !toggleTools;
 
         });
 

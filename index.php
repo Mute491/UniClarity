@@ -66,7 +66,6 @@ if (!($_POST["svgData"] == "{}")) {
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="Css/stylePdfViewer.css">
     <link rel="stylesheet" herf="Css/styleLoadingPopUp.css">
 
     <?php 
@@ -127,6 +126,13 @@ if (!($_POST["svgData"] == "{}")) {
         </section>
 
         <section class="tools-and-buttons">
+
+            <div id="hide-tools-button-div">
+
+                <button id="hide-tools-button"><i id="hide-tools-button-icon" class="fa-solid fa-bars-staggered fa-xl"></i></button>
+
+            </div>
+
             <div class="drawing-tools">
 
                 <input type="color" id="segment-color">
@@ -144,7 +150,6 @@ if (!($_POST["svgData"] == "{}")) {
 
                     <button id="zoom-in"><i class="fa-solid fa-magnifying-glass-plus fa-xl"></i></button>
                     <button id="zoom-out"><i class="fa-solid fa-magnifying-glass-minus fa-xl"></i></button>
-                    <button id="hide-tools-button"><i id="hide-tools-button-icon" class="fa-solid fa-bars-staggered fa-xl"></i></button>
 
                 </div>
                 <div class="navgation-buttons">
@@ -164,11 +169,6 @@ if (!($_POST["svgData"] == "{}")) {
 
                     <button id="save-button"><i class="fa-solid fa-floppy-disk fa-xl"></i></button>
                     <button id="multipage-button"><i id="multipage-button-icon" class="fa-solid fa-file fa-xl"></i></button>
-
-                </div>
-                <div>
-
-                    
 
                 </div>
 

@@ -1,0 +1,240 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: arial;
+}
+
+/* Stili del contenuto del sito */
+.content {
+    text-align: center;
+    display: none;
+    /* Nascondi il contenuto fino al termine del caricamento */
+}
+
+.content h1 {
+    color: #333;
+    font-size: 2em;
+}
+
+/*actual page*/
+
+.canvas-and-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Allinea al centro */
+    width: 100%; /* Assicura che occupi tutta la larghezza disponibile */
+}
+
+.change-page-buttons {
+    display: flex; /* Assicura che i bottoni siano affiancati */
+    align-items: center; /* Allinea verticalmente al centro */
+}
+
+.change-page-buttons button {
+    margin-right: 10px; /* Spazio tra i bottoni */
+}
+
+#canvas-div {
+    position: relative; /* Per sovrapporre elementi */
+    margin: 0 auto; /* Centra orizzontalmente */
+    border: 1px solid black; /* Bordo per evidenziare il canvas */
+    width:80%;
+    height: auto; /* Imposta l'altezza automatica */
+}
+
+#pdf-canvas-div {
+    position: absolute; /* Sovrapposto a draw-svg-div */
+    top: 0; /* Assicura che sia in alto */
+    left: 0; /* Assicura che sia a sinistra */
+    z-index: 1; /* Sotto il disegno */
+
+    
+
+    justify-content: center; /* Centra orizzontalmente la canvas */
+    align-items: center; /* Centra verticalmente la canvas */
+
+}
+
+#draw-svg-div {
+    position: absolute; /* Sovrapposto al canvas PDF */
+    width: 100%; /* Si estende su tutto canvas-div */
+    height: 100%; /* Si estende su tutto canvas-div */
+    z-index: 1000; /* Sopra il canvas PDF */
+
+    display: flex;
+    gap: 10px; /* Distanza tra i canvas */
+
+    justify-content: center; /* Centra orizzontalmente la canvas */
+    align-items: center; /* Centra verticalmente la canvas */
+}
+
+.draw-svg {
+    cursor: crosshair; /* Cursor a croce per disegnare */
+    background-color: transparent; /* Trasparente per non coprire il PDF */
+    width: 100%; /* Occupa tutto il div */
+    height: 100%; /* Occupa tutto il div */
+}
+
+
+button{
+
+    border: 0 solid black;
+    background-color: transparent;
+    color:cornflowerblue;
+}
+
+button:hover{
+
+    color:blue;
+
+}
+
+
+/* Stile per il color picker */
+input[type="color"] {
+    -webkit-appearance: none; /* Rimuovi lo stile predefinito del browser */
+    width: 40px; /* Larghezza del color picker */
+    height: 40px; /* Altezza del color picker */
+    border: none; /* Rimuovi il bordo */
+    border-radius: 5px; /* Angoli arrotondati */
+    cursor: pointer; /* Mostra il cursore come puntatore */
+    outline: none; /* Rimuovi il bordo di messa a fuoco */
+}
+
+/* Stile per il range */
+input[type="range"] {
+    -webkit-appearance: none; /* Rimuovi lo stile predefinito del browser */
+    width: 30%; /* Larghezza al 100% */
+    height: 8px; /* Altezza della barra */
+    background: #ddd; /* Colore di sfondo della barra */
+    border-radius: 5px; /* Angoli arrotondati */
+    outline: none; /* Rimuovi il bordo di messa a fuoco */
+    margin: 10px 0; /* Margine sopra e sotto */
+}
+
+/* Stile per il pollice (thumb) */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Rimuovi lo stile predefinito del browser */
+    appearance: none; /* Rimuovi lo stile predefinito del browser */
+    width: 10px; /* Larghezza del pollice */
+    height: 10px; /* Altezza del pollice */
+    border-radius: 50%; /* Pollice arrotondato */
+    background: #007BFF; /* Colore del pollice */
+    cursor: pointer; /* Mostra il cursore come puntatore */
+}
+
+/* Stile per il pollice (thumb) su Firefox */
+input[type="range"]::-moz-range-thumb {
+    width: 10px; /* Larghezza del pollice */
+    height: 10px; /* Altezza del pollice */
+    border-radius: 50%; /* Pollice arrotondato */
+    background: #007BFF; /* Colore del pollice */
+    cursor: pointer; /* Mostra il cursore come puntatore */
+}
+
+/* Stile per il pollice (thumb) su Internet Explorer */
+input[type="range"]::-ms-thumb {
+    width: 10px; /* Larghezza del pollice */
+    height: 10px; /* Altezza del pollice */
+    border-radius: 50%; /* Pollice arrotondato */
+    background: #007BFF; /* Colore del pollice */
+    cursor: pointer; /* Mostra il cursore come puntatore */
+}
+
+/* Stile per il track su Firefox */
+input[type="range"]::-moz-range-track {
+    background: #ddd; /* Colore di sfondo della barra */
+    border-radius: 5px; /* Angoli arrotondati */
+}
+
+/* Stile per il track su Internet Explorer */
+input[type="range"]::-ms-track {
+    background: #ddd; /* Colore di sfondo della barra */
+    border-radius: 5px; /* Angoli arrotondati */
+    height: 8px; /* Altezza della barra */
+    border: none; /* Rimuovi il bordo */
+}
+
+/* Rimuovi il segno di selezione sul color picker */
+input[type="color"]::-webkit-color-swatch {
+    border: none; /* Rimuovi il bordo */
+    border-radius: 5px; /* Angoli arrotondati */
+}
+
+input[type="number"] {
+
+    width: 70px; /* Larghezza del select */
+    padding: 10px; /* Padding interno */
+    border: 1px solid #ccc; /* Bordo chiaro */
+    border-radius: 5px; /* Angoli arrotondati */
+    background-color: #fff; /* Colore di sfondo */
+    color: #333; /* Colore del testo */
+    font-size: 16px; /* Dimensione del font */
+
+}
+
+/* Stile per il select */
+select{
+    width: 100px; /* Larghezza del select */
+    padding: 10px; /* Padding interno */
+    border: 1px solid #ccc; /* Bordo chiaro */
+    border-radius: 5px; /* Angoli arrotondati */
+    background-color: #fff; /* Colore di sfondo */
+    color: #333; /* Colore del testo */
+    font-size: 16px; /* Dimensione del font */
+    appearance: none; /* Rimuovi lo stile predefinito */
+}
+
+/* Stile per il select al passaggio del mouse */
+select:hover {
+    border-color: #007BFF; /* Colore del bordo al passaggio del mouse */
+}
+
+/* Stile per il select quando è in focus */
+select:focus {
+    outline: none; /* Rimuovi il bordo di messa a fuoco predefinito */
+    border-color: #007BFF; /* Colore del bordo in focus */
+}
+
+#body-div {
+    display: flex;
+    flex-direction: row; /* Disposizione orizzontale */
+    align-items: stretch; /* I container si allineano lungo l'asse verticale */
+    height: 95vh; /* Se vuoi che l'altezza occupi l'intera pagina */
+    margin-top:2px;
+}
+
+
+.tools-and-buttons {
+    flex: 0 0 23%; /* Mantiene una larghezza fissa di 30% per questi container */
+    /* border: 2px solid lightgray; */
+    box-shadow: -4px 0 8px rgba(0, 123, 255, 0.6); /* Ombra celeste a sinistra */
+    border-top-left-radius: 20px; /* Arrotonda il bordo in alto a sinistra */
+    border-bottom-left-radius: 20px; /* Arrotonda il bordo in alto a destra */
+    overflow: hidden; /* Per evitare che il contenuto fuoriuscisca durante l'animazione */
+}
+
+.drawing-tools{
+
+    padding:10px;
+
+}
+
+.zoom-in-out, .navigation-buttons{
+
+    padding-bottom: 20px;
+
+}
+
+#hide-tools-button-div {
+    position: absolute; /* Posiziona il div in modo assoluto rispetto al contenitore */
+    top: 10px; /* Distanza dall'alto della sezione */
+    right: 5px; /* Distanza dal lato destro della sezione */
+}
+
+.pdf-draw-section {
+    flex: 1; /* Questo container occupa tutto lo spazio disponibile al centro */
+    /*overflow: hidden;*/ /* Abilita lo scroll se il contenuto supera la dimensione disponibile */
+    height: 100%; /* Assicura che il container occupi tutta l'altezza */
+    overflow: auto;
+}

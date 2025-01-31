@@ -38,6 +38,7 @@ html, body {
     position: relative; /* Per sovrapporre elementi */
     margin: 0 auto; /* Centra orizzontalmente */
     border: 1px solid black; /* Bordo per evidenziare il canvas */
+    width:80%;
     height: auto; /* Imposta l'altezza automatica */
 }
 
@@ -48,11 +49,28 @@ html, body {
     z-index: 1; /* Sotto il disegno */
 
     display: flex;
-    flex-direction: column;
-    align-items: center; /* Se vuoi centrare i canvas orizzontalmente */
     gap: 10px; /* Distanza tra i canvas */
 
+    justify-content: center; /* Centra orizzontalmente la canvas */
+    align-items: center; /* Centra verticalmente la canvas */
+
 }
+
+#pdf-canvas-div canvas{
+
+    flex: 1; /*Ogni canvas occupa metà della larghezza */
+
+}
+
+/* .align-single-canvas{
+
+    
+
+}
+
+.align-multiple-canvases {
+    
+} */
 
 #draw-svg-div {
     position: absolute; /* Sovrapposto al canvas PDF */
@@ -199,7 +217,7 @@ select:focus {
 
 
 .tools-and-buttons {
-    flex: 0 0 15%; /* Mantiene una larghezza fissa di 30% per questi container */
+    flex: 0 0 20%; /* Mantiene una larghezza fissa di 30% per questi container */
     /* border: 2px solid lightgray; */
     box-shadow: -4px 0 8px rgba(0, 123, 255, 0.6); /* Ombra celeste a sinistra */
     border-top-left-radius: 20px; /* Arrotonda il bordo in alto a sinistra */
@@ -219,6 +237,11 @@ select:focus {
 
 }
 
+#hide-tools-button-div {
+    position: absolute; /* Posiziona il div in modo assoluto rispetto al contenitore */
+    top: 10px; /* Distanza dall'alto della sezione */
+    right: 5px; /* Distanza dal lato destro della sezione */
+}
 
 .pdf-draw-section {
     flex: 1; /* Questo container occupa tutto lo spazio disponibile al centro */

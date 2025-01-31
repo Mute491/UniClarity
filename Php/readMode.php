@@ -1,4 +1,6 @@
 
+<link rel="stylesheet" href="Css/stylePdfViewerReadMode.css">
+
 <script type="module" src="JS/PdfRender.js"></script>
 <script src="JS/zoomAndNavigation.js"></script>
 
@@ -11,7 +13,7 @@
     var isMultipage = false;
     var pageNumber = 1;
     var toggleTools = true;
-    var toolsDivWidth = "15%";
+    var toolsDivWidth = "20%";
 
     function hideDrawingTools(){
 
@@ -47,18 +49,19 @@
 
             $(".tools-and-buttons").animate({
                 "flex-basis": toolsDivWidth
+            }, 400, function (){
+
+                $("#zoom-in").show();
+                $("#zoom-out").show();
+                $("#prev-page").show();
+                $("#next-page").show();
+                $("#page-counter-div").show();
+                $("#multipage-button").show();
+
+                $("#hide-tools-button-icon").removeClass("fa-bars");
+                $("#hide-tools-button-icon").addClass("fa-bars-staggered");
+
             });
-
-            $("#zoom-in").show();
-            $("#zoom-out").show();
-            $("#prev-page").show();
-            $("#next-page").show();
-            $("#page-counter-div").show();
-            $("#multipage-button").show();
-
-
-            $("#hide-tools-button-icon").removeClass("fa-bars");
-            $("#hide-tools-button-icon").addClass("fa-bars-staggered");
 
         }
 
